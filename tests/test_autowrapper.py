@@ -25,6 +25,9 @@ class StatefulTarget(BaseTarget):
     def keyword_only_total(self, *, first, second=0):
         return first + second
 
+    def _private_value(self):
+        return f"private:{self.value}"
+
 
 class RecordingWrapper(AutoWrapper):
     def __init__(self, target):
@@ -69,6 +72,21 @@ class ConfiguredHintsWrapper(AutoWrapper):
                 "add_to_value": {"proxy": True, "wrap": True},
                 "keyword_only_total": {"proxy": False, "wrap": True},
             },
+        )
+
+    def _pre_method_hook(self, method, *args, **kwargs):
+        self.hook_calls.append(("pre", method.__name__))
+
+    def _post_method_hook(self, method, *args, **kwargs):
+        self.hook_calls.append(("post", method.__name__))
+
+
+class ExplicitPrivateWrapper(AutoWrapper):
+    def __init__(self, target):
+        self.hook_calls = []
+        self.build_wrapper(
+            target,
+            hints={"_private_value": {"proxy": True, "wrap": True}},
         )
 
     def _pre_method_hook(self, method, *args, **kwargs):
@@ -173,6 +191,22 @@ class AutoWrapperBindingTests(unittest.TestCase):
 
         self.assertEqual(wrapper.inherited_value(), "inherited:3")
         self.assertEqual(wrapper.read_value(), 3)
+
+    def test_no_hints_skips_private_methods_by_default(self):
+        target = StatefulTarget()
+        wrapper = DefaultHintsWrapper(target)
+
+        self.assertFalse(hasattr(wrapper, "_private_value"))
+
+    def test_explicit_hints_can_proxy_and_wrap_private_methods(self):
+        target = StatefulTarget()
+        wrapper = ExplicitPrivateWrapper(target)
+
+        self.assertEqual(wrapper._private_value(), "private:3")
+        self.assertEqual(
+            wrapper.hook_calls,
+            [("pre", "_private_value"), ("post", "_private_value")],
+        )
 
 
 if __name__ == "__main__":
