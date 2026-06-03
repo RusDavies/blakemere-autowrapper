@@ -1,14 +1,23 @@
-import inspect
-from functools import wraps
+from __future__ import annotations
 
-class AutoWrapper():
+import inspect
+from collections.abc import Callable, Mapping
+from functools import wraps
+from typing import Any, Optional
+
+HintConfig = Mapping[str, bool]
+Hints = Mapping[str, HintConfig]
+MethodEntry = tuple[str, Callable[..., Any]]
+
+
+class AutoWrapper:
     @staticmethod
-    def getMethods2Wrap(class_type, hints=None):
+    def get_methods_to_wrap(class_type: type, hints: Optional[Hints] = None) -> list[MethodEntry]:
         methods = inspect.getmembers(
             class_type,
             predicate=lambda att: inspect.isfunction(att) or inspect.ismethod(att),
         )
-        if (hints == None):
+        if hints is None:
             # With no hints, wrap all public discovered functions.
             results = [(name, att) for (name, att) in methods if not name.startswith('_')]
         else:
@@ -19,14 +28,17 @@ class AutoWrapper():
             ]
         return results
 
-    def build_wrapper(self, class_to_wrap, hints=None):
+    # Backward-compatible alias for the original public API spelling.
+    getMethods2Wrap = get_methods_to_wrap
+
+    def build_wrapper(self, class_to_wrap: object, hints: Optional[Hints] = None) -> None:
         """Build proxy methods for ``class_to_wrap``.
 
         Hint semantics:
 
         * ``hints is None``: every public method discovered by
-          ``getMethods2Wrap`` is proxied and wrapped with the pre/post hooks;
-          names beginning with ``_`` are skipped by default.
+          ``get_methods_to_wrap`` is proxied and wrapped with the pre/post
+          hooks; names beginning with ``_`` are skipped by default.
         * ``proxy: True``: expose that method on this wrapper instance. This
           explicit opt-in can include private methods.
         * ``proxy`` absent or false: do not expose that method on this wrapper
@@ -47,7 +59,7 @@ class AutoWrapper():
         self._wrapped = class_to_wrap
         class_type = type(class_to_wrap)
         wrap_by_default = hints is None
-        for (attributeName, attribute) in __class__.getMethods2Wrap(class_type, hints):
+        for (attributeName, attribute) in self.get_methods_to_wrap(class_type, hints):
             bound_attribute = getattr(class_to_wrap, attributeName)
             should_wrap = wrap_by_default or hints.get(attributeName, {}).get('wrap', False)
             if hasattr(self, attributeName):
@@ -59,9 +71,9 @@ class AutoWrapper():
                 bound_attribute = self._wrapper(bound_attribute)
             self.__dict__[attributeName] = bound_attribute
 
-    def _wrapper(self, method):
+    def _wrapper(self, method: Callable[..., Any]) -> Callable[..., Any]:
         @wraps(method)
-        def wrapped(*args, **kwargs):
+        def wrapped(*args: Any, **kwargs: Any) -> Any:
             method_name = method.__name__
             self._pre_method_hook(method_name, method, args, kwargs)
             try:
@@ -73,13 +85,33 @@ class AutoWrapper():
             return result
         return wrapped
 
-    def _pre_method_hook(self, method_name, method, args, kwargs):
+    def _pre_method_hook(
+        self,
+        method_name: str,
+        method: Callable[..., Any],
+        args: tuple[Any, ...],
+        kwargs: dict[str, Any],
+    ) -> None:
         pass
 
-    def _post_method_hook(self, method_name, method, args, kwargs, result):
+    def _post_method_hook(
+        self,
+        method_name: str,
+        method: Callable[..., Any],
+        args: tuple[Any, ...],
+        kwargs: dict[str, Any],
+        result: Any,
+    ) -> None:
         pass
 
-    def _exception_method_hook(self, method_name, method, args, kwargs, exc):
+    def _exception_method_hook(
+        self,
+        method_name: str,
+        method: Callable[..., Any],
+        args: tuple[Any, ...],
+        kwargs: dict[str, Any],
+        exc: Exception,
+    ) -> None:
         pass
 
 

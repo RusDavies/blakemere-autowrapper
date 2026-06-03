@@ -4,8 +4,8 @@ This backlog captures the initial improvement plan for turning `AutoWrapper.py` 
 
 ## Burndown
 
-- Open: 1
-- Done: 15
+- Open: 0
+- Done: 16
 - Total: 16
 
 ## Items
@@ -171,7 +171,7 @@ This backlog captures the initial improvement plan for turning `AutoWrapper.py` 
 - Allow safe non-colliding proxy assignment to keep working.
 - Tests cover collisions with wrapper instance attributes and wrapper methods.
 
-### [ ] AW-015 Add type hints and snake_case API alias
+### [x] AW-015 Add type hints and snake_case API alias
 
 **Problem:** Public APIs are untyped and `getMethods2Wrap` is non-idiomatic Python naming.
 

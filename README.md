@@ -19,6 +19,7 @@ Implemented behavior:
 - Preserve useful method metadata for wrapped methods via `functools.wraps()`.
 - Provide pre, post, and exception hooks with method context.
 - Reject proxied method names that would overwrite wrapper attributes or methods.
+- Provide typed public methods and prefer the snake_case `get_methods_to_wrap()` discovery API while preserving `getMethods2Wrap()` compatibility.
 
 ## Basic usage
 
@@ -70,6 +71,20 @@ assert wrapper.events == [
 AutoWrapper is intentionally scoped to wrapping methods discovered from a target object. It supports instance methods, inherited methods, static methods, and class methods on that target object's class.
 
 Standalone/free functions are out of scope for now. If you need to wrap a free function, use a normal decorator directly or place the function behind a small object method before using AutoWrapper.
+
+## Method discovery API
+
+The preferred public discovery helper is:
+
+```python
+AutoWrapper.get_methods_to_wrap(TargetClass, hints=None)
+```
+
+The original spelling remains available for compatibility:
+
+```python
+AutoWrapper.getMethods2Wrap(TargetClass, hints=None)
+```
 
 ## Hint semantics
 
