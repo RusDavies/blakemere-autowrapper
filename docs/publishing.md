@@ -1,6 +1,51 @@
 # Publishing to PyPI
 
-This project is configured to publish the `autowrapper` distribution to PyPI using GitHub Actions trusted publishing.
+This project is configured to publish the `autowrapper` distribution using GitHub Actions trusted publishing.
+
+Use TestPyPI first, then production PyPI. TestPyPI and PyPI are separate services with separate accounts, separate trusted-publisher settings, and separate package namespaces.
+
+
+## One-time TestPyPI setup
+
+1. Create or sign in to a TestPyPI account: <https://test.pypi.org/account/register/>
+2. Enable 2FA on the TestPyPI account.
+3. Add a pending trusted publisher for the TestPyPI project name `autowrapper`.
+4. In TestPyPI, configure a trusted publisher with:
+   - Owner: `RusDavies`
+   - Repository name: `blakemere-autowrapper`
+   - Workflow filename: `publish-testpypi.yml`
+   - Environment name: `testpypi`
+
+No TestPyPI API token is needed when trusted publishing is configured correctly.
+
+## GitHub TestPyPI environment
+
+The TestPyPI publishing workflow uses the GitHub environment named `testpypi`.
+
+Recommended GitHub settings:
+
+- Require manual approval for the `testpypi` environment.
+- Restrict who can approve deployments to trusted maintainers.
+
+## Publishing to TestPyPI first
+
+Because `v0.1.0` already exists, use the manual TestPyPI workflow once TestPyPI trusted publishing is configured:
+
+1. Open: <https://github.com/RusDavies/blakemere-autowrapper/actions/workflows/publish-testpypi.yml>
+2. Click **Run workflow**.
+3. Enter `v0.1.0` as the `ref`.
+4. Approve the `testpypi` GitHub environment deployment if prompted.
+5. Verify the TestPyPI page: <https://test.pypi.org/project/autowrapper/>
+6. Test installation from TestPyPI:
+
+   ```bash
+   python -m venv /tmp/autowrapper-testpypi
+   /tmp/autowrapper-testpypi/bin/python -m pip install --upgrade pip
+   /tmp/autowrapper-testpypi/bin/python -m pip install --index-url https://test.pypi.org/simple/ autowrapper==0.1.0
+   /tmp/autowrapper-testpypi/bin/python -c "from autowrapper import AutoWrapper; print(AutoWrapper)"
+   ```
+
+Only publish to production PyPI after TestPyPI upload and install verification succeed.
 
 ## One-time PyPI setup
 
@@ -15,9 +60,9 @@ This project is configured to publish the `autowrapper` distribution to PyPI usi
 
 No PyPI API token is needed when trusted publishing is configured correctly. GitHub requests a short-lived publishing token from PyPI using OIDC.
 
-## GitHub environment
+## GitHub production PyPI environment
 
-The publishing workflow uses the GitHub environment named `pypi`.
+The production publishing workflow uses the GitHub environment named `pypi`.
 
 Recommended GitHub settings:
 
@@ -39,9 +84,9 @@ python -m twine check dist/*
 
 Also confirm that GitHub Actions CI is green for the commit being released.
 
-## Publishing a release
+## Publishing a production release
 
-Publishing is normally triggered by creating a GitHub release from a version tag:
+Production publishing is normally triggered by creating a GitHub release from a version tag:
 
 1. Update `pyproject.toml` version if needed.
 2. Commit the version change.
@@ -57,9 +102,9 @@ Publishing is normally triggered by creating a GitHub release from a version tag
 6. Approve the `pypi` GitHub environment deployment if approval is enabled.
 7. Verify the package page: <https://pypi.org/project/autowrapper/>
 
-## Publishing the existing `v0.1.0` release
+## Publishing the existing `v0.1.0` release to production PyPI
 
-Because `v0.1.0` already exists, use the manual workflow once PyPI trusted publishing is configured:
+Because `v0.1.0` already exists, use the manual production workflow once PyPI trusted publishing is configured and TestPyPI has been verified:
 
 1. Open: <https://github.com/RusDavies/blakemere-autowrapper/actions/workflows/publish-pypi.yml>
 2. Click **Run workflow**.
@@ -69,6 +114,7 @@ Because `v0.1.0` already exists, use the manual workflow once PyPI trusted publi
 
 ## Important constraints
 
-- PyPI project names are first-come and cannot be casually renamed after publishing.
-- A released version number cannot be reused on PyPI after upload, even if the file is deleted.
+- PyPI and TestPyPI project names are first-come and cannot be casually renamed after publishing.
+- A released version number cannot be reused on PyPI or TestPyPI after upload, even if the file is deleted.
+- TestPyPI is not a perfect mirror of production PyPI, but it catches workflow, metadata, and install problems before they become permanent production mistakes.
 - Test the build locally before publishing. PyPI is not where packaging mistakes should go to become immortal.
