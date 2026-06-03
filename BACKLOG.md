@@ -4,8 +4,8 @@ This backlog captures the initial improvement plan for turning `AutoWrapper.py` 
 
 ## Burndown
 
-- Open: 3
-- Done: 13
+- Open: 2
+- Done: 14
 - Total: 16
 
 ## Items
@@ -149,7 +149,7 @@ This backlog captures the initial improvement plan for turning `AutoWrapper.py` 
 - Run Python compile checks.
 - Build/package validation runs if practical.
 
-### [ ] AW-013 Decide and test classmethod/staticmethod behavior
+### [x] AW-013 Decide and test classmethod/staticmethod behavior
 
 **Problem:** Static methods are currently discovered, but class methods are skipped because discovery only includes `inspect.isfunction` results.
 
