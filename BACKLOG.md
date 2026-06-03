@@ -4,8 +4,8 @@ This backlog captures the initial improvement plan for turning `AutoWrapper.py` 
 
 ## Burndown
 
-- Open: 5
-- Done: 11
+- Open: 4
+- Done: 12
 - Total: 16
 
 ## Items
@@ -129,7 +129,7 @@ This backlog captures the initial improvement plan for turning `AutoWrapper.py` 
 
 ## Next improvement batch
 
-### [ ] AW-011 Add LICENSE file
+### [x] AW-011 Add LICENSE file
 
 **Problem:** `pyproject.toml` declares MIT licensing, but the repository does not include a `LICENSE` file.
 
