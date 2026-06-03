@@ -41,6 +41,18 @@ class RecordingWrapper(AutoWrapper):
         self.hook_calls.append(("post", method.__name__))
 
 
+class DefaultHintsWrapper(AutoWrapper):
+    def __init__(self, target):
+        self.hook_calls = []
+        self.build_wrapper(target)
+
+    def _pre_method_hook(self, method, *args, **kwargs):
+        self.hook_calls.append(("pre", method.__name__))
+
+    def _post_method_hook(self, method, *args, **kwargs):
+        self.hook_calls.append(("post", method.__name__))
+
+
 class AutoWrapperBindingTests(unittest.TestCase):
     def test_wrapped_method_reads_state_from_target_object(self):
         target = StatefulTarget()
@@ -75,6 +87,23 @@ class AutoWrapperBindingTests(unittest.TestCase):
         wrapper = RecordingWrapper(target)
 
         self.assertEqual(wrapper.keyword_only_total(first=5, second=8), 13)
+
+    def test_build_wrapper_without_hints_proxies_and_wraps_discovered_methods(self):
+        target = StatefulTarget()
+        wrapper = DefaultHintsWrapper(target)
+
+        self.assertEqual(wrapper.read_value(), 3)
+        self.assertEqual(wrapper.add_to_value(2), 5)
+        self.assertEqual(target.value, 5)
+        self.assertEqual(
+            wrapper.hook_calls,
+            [
+                ("pre", "read_value"),
+                ("post", "read_value"),
+                ("pre", "add_to_value"),
+                ("post", "add_to_value"),
+            ],
+        )
 
 
 if __name__ == "__main__":
