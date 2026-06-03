@@ -5,8 +5,8 @@ This backlog captures the initial improvement plan for turning `AutoWrapper.py` 
 ## Burndown
 
 - Open: 0
-- Done: 19
-- Total: 19
+- Done: 20
+- Total: 20
 
 ## Items
 
@@ -220,3 +220,14 @@ This backlog captures the initial improvement plan for turning `AutoWrapper.py` 
 - Document one-time PyPI trusted-publisher setup.
 - Document how to publish the existing `v0.1.0` release.
 - Verify package metadata and build artifacts locally.
+
+### [x] AW-020 Add TestPyPI publishing workflow and first-run documentation
+
+**Problem:** Production PyPI should not be the first external upload target for a new package.
+
+**Acceptance criteria:**
+
+- Add a separate TestPyPI publishing workflow.
+- Document TestPyPI trusted-publisher setup.
+- Document manual publishing of the existing `v0.1.0` tag to TestPyPI.
+- Document TestPyPI installation verification before production PyPI publishing.
