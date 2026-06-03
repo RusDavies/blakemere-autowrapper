@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "autowrapper"
+version = "0.1.0"
+description = "Lightweight method proxy/wrapper helper with pre, post, and exception hooks."
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "MIT"}
+authors = [
+  {name = "Russ Davies"}
+]
+keywords = ["wrapper", "proxy", "decorator", "hooks", "instrumentation"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+]
+
+[tool.setuptools]
+py-modules = ["AutoWrapper", "autowrapper"]

@@ -6,7 +6,7 @@ It lets a wrapper class expose selected methods from a target object and optiona
 
 ## Current status
 
-This project is still small and intentionally direct: one implementation module, `AutoWrapper.py`, plus a `unittest` test suite.
+This project is still small and intentionally direct: one implementation module, `AutoWrapper.py`, a lowercase compatibility import module, packaging metadata, and a `unittest` test suite.
 
 Implemented behavior:
 
@@ -22,7 +22,7 @@ Implemented behavior:
 ## Basic usage
 
 ```python
-from AutoWrapper import AutoWrapper
+from autowrapper import AutoWrapper
 
 
 class Example:
@@ -99,6 +99,26 @@ def _exception_method_hook(self, method_name, method, args, kwargs, exc):
 
 Exceptions raised by wrapped target methods call `_exception_method_hook()` and then propagate unchanged.
 
+## Installation for local development
+
+From a clean checkout, install the project in editable mode with:
+
+```bash
+python -m pip install -e .
+```
+
+The preferred import path is lowercase:
+
+```python
+from autowrapper import AutoWrapper
+```
+
+The original import path remains available for compatibility:
+
+```python
+from AutoWrapper import AutoWrapper
+```
+
 ## Running tests
 
 This project currently uses the Python standard-library `unittest` framework, so no test dependency installation is required.
@@ -119,11 +139,16 @@ python AutoWrapper.py
 
 ```text
 AutoWrapper.py              # implementation and tiny inline example
+autowrapper.py              # lowercase import compatibility module
+pyproject.toml              # packaging metadata
 __init__.py                 # placeholder package marker
 tests/test_autowrapper.py   # unittest coverage
 BACKLOG.md                  # project improvement backlog
 ```
 
-## Known next step
+## Packaging note
 
-The remaining structural improvement is packaging: add `pyproject.toml`, choose a lowercase package/module layout, and define install metadata.
+`pyproject.toml` packages both modules:
+
+- `autowrapper`: preferred lowercase import path.
+- `AutoWrapper`: original compatibility import path.
