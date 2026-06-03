@@ -18,6 +18,7 @@ Implemented behavior:
 - Skip private/dunder methods by default, with explicit hint opt-in.
 - Preserve useful method metadata for wrapped methods via `functools.wraps()`.
 - Provide pre, post, and exception hooks with method context.
+- Reject proxied method names that would overwrite wrapper attributes or methods.
 
 ## Basic usage
 
@@ -81,6 +82,7 @@ Behavior:
 - `wrap` absent or false: expose the target-bound method directly without hooks.
 - Methods absent from a supplied `hints` dictionary are not proxied.
 - Private methods whose names begin with `_` are skipped by default, but can be explicitly proxied with hints.
+- Proxied method names that collide with existing wrapper attributes or methods raise `AttributeError`.
 
 ## Hook signatures
 
