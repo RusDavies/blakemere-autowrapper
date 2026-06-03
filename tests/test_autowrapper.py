@@ -14,6 +14,12 @@ class StatefulTarget:
         self.value += amount
         return self.value
 
+    def format_values(self, prefix, value, *, suffix=""):
+        return f"{prefix}:{value}{suffix}"
+
+    def keyword_only_total(self, *, first, second=0):
+        return first + second
+
 
 class RecordingWrapper(AutoWrapper):
     def __init__(self, target):
@@ -23,6 +29,8 @@ class RecordingWrapper(AutoWrapper):
             hints={
                 "read_value": {"proxy": True, "wrap": True},
                 "add_to_value": {"proxy": True, "wrap": True},
+                "format_values": {"proxy": True, "wrap": True},
+                "keyword_only_total": {"proxy": True, "wrap": True},
             },
         )
 
@@ -52,6 +60,21 @@ class AutoWrapperBindingTests(unittest.TestCase):
         self.assertEqual(wrapper.add_to_value(4), 7)
         self.assertEqual(target.value, 7)
         self.assertFalse(hasattr(wrapper, "value"))
+
+    def test_wrapped_method_forwards_mixed_positional_and_keyword_arguments(self):
+        target = StatefulTarget()
+        wrapper = RecordingWrapper(target)
+
+        self.assertEqual(
+            wrapper.format_values("item", value=42, suffix="!"),
+            "item:42!",
+        )
+
+    def test_wrapped_method_forwards_keyword_only_arguments(self):
+        target = StatefulTarget()
+        wrapper = RecordingWrapper(target)
+
+        self.assertEqual(wrapper.keyword_only_total(first=5, second=8), 13)
 
 
 if __name__ == "__main__":

@@ -4,8 +4,8 @@ This backlog captures the initial improvement plan for turning `AutoWrapper.py` 
 
 ## Burndown
 
-- Open: 9
-- Done: 1
+- Open: 8
+- Done: 2
 - Total: 10
 
 ## Items
@@ -62,7 +62,7 @@ This backlog captures the initial improvement plan for turning `AutoWrapper.py` 
 - Explicit hints can include private methods if needed.
 - Tests cover skipped private methods and explicit inclusion.
 
-### [ ] AW-006 Fix wrapper argument handling
+### [x] AW-006 Fix wrapper argument handling
 
 **Problem:** `_wrapper()` calls `method(self, *args, *kwargs)`, which is incorrect for keyword arguments.
 
