@@ -4,13 +4,13 @@ This backlog captures the initial improvement plan for turning `AutoWrapper.py` 
 
 ## Burndown
 
-- Open: 10
-- Done: 0
+- Open: 9
+- Done: 1
 - Total: 10
 
 ## Items
 
-### [ ] AW-001 Fix core wrapped-object method binding
+### [x] AW-001 Fix core wrapped-object method binding
 
 **Problem:** Wrapped methods currently receive the `AutoWrapper` instance as `self`, not the object being wrapped. This only works for methods that do not access instance state.
 
