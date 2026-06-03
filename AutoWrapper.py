@@ -37,6 +37,8 @@ class AutoWrapper():
           is supplied.
         * Wrapped method exceptions call ``_exception_method_hook`` and then
           propagate unchanged.
+        * Proxied method names must not collide with existing wrapper
+          attributes or methods.
         """
         self._wrapped = class_to_wrap
         class_type = type(class_to_wrap)
@@ -44,6 +46,11 @@ class AutoWrapper():
         for (attributeName, attribute) in __class__.getMethods2Wrap(class_type, hints):
             bound_attribute = getattr(class_to_wrap, attributeName)
             should_wrap = wrap_by_default or hints.get(attributeName, {}).get('wrap', False)
+            if hasattr(self, attributeName):
+                raise AttributeError(
+                    "Cannot proxy method {!r}: wrapper already has an "
+                    "attribute with that name".format(attributeName)
+                )
             if ((isinstance(attribute, FunctionType) == True) & (should_wrap == True)):
                 bound_attribute = self._wrapper(bound_attribute)
             self.__dict__[attributeName] = bound_attribute

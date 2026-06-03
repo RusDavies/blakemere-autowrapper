@@ -126,12 +126,49 @@ class DetailedHookWrapper(AutoWrapper):
         )
 
 
+class InstanceAttributeCollisionWrapper(AutoWrapper):
+    def __init__(self, target):
+        self.read_value = "already here"
+        self.build_wrapper(
+            target,
+            hints={"read_value": {"proxy": True, "wrap": True}},
+        )
+
+
+class MethodCollisionWrapper(AutoWrapper):
+    def __init__(self, target):
+        self.build_wrapper(
+            target,
+            hints={"existing_method": {"proxy": True, "wrap": True}},
+        )
+
+    def existing_method(self):
+        return "wrapper method"
+
+
+class CollisionTarget:
+    def existing_method(self):
+        return "target method"
+
+
 class AutoWrapperPackagingTests(unittest.TestCase):
     def test_lowercase_import_path_exports_autowrapper(self):
         self.assertIs(LowercaseAutoWrapper, AutoWrapper)
 
 
 class AutoWrapperBindingTests(unittest.TestCase):
+    def test_build_wrapper_rejects_instance_attribute_collision(self):
+        target = StatefulTarget()
+
+        with self.assertRaisesRegex(AttributeError, "read_value"):
+            InstanceAttributeCollisionWrapper(target)
+
+    def test_build_wrapper_rejects_wrapper_method_collision(self):
+        target = CollisionTarget()
+
+        with self.assertRaisesRegex(AttributeError, "existing_method"):
+            MethodCollisionWrapper(target)
+
     def test_wrapped_method_reads_state_from_target_object(self):
         target = StatefulTarget()
         wrapper = RecordingWrapper(target)

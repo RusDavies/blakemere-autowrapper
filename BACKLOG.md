@@ -4,8 +4,8 @@ This backlog captures the initial improvement plan for turning `AutoWrapper.py` 
 
 ## Burndown
 
-- Open: 6
-- Done: 10
+- Open: 5
+- Done: 11
 - Total: 16
 
 ## Items
@@ -160,7 +160,7 @@ This backlog captures the initial improvement plan for turning `AutoWrapper.py` 
 - Add explicit tests for class methods or document that they are unsupported.
 - Implement classmethod support if supported behavior is chosen.
 
-### [ ] AW-014 Add collision detection for wrapper attribute assignment
+### [x] AW-014 Add collision detection for wrapper attribute assignment
 
 **Problem:** `build_wrapper()` writes proxied methods directly into `self.__dict__`, which can overwrite wrapper state or existing wrapper methods.
 
