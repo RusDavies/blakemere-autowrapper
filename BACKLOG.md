@@ -4,8 +4,8 @@ This backlog captures the initial improvement plan for turning `AutoWrapper.py` 
 
 ## Burndown
 
-- Open: 4
-- Done: 12
+- Open: 3
+- Done: 13
 - Total: 16
 
 ## Items
@@ -138,7 +138,7 @@ This backlog captures the initial improvement plan for turning `AutoWrapper.py` 
 - Add an MIT `LICENSE` file.
 - Ensure package metadata and README licensing notes are consistent.
 
-### [ ] AW-012 Add CI workflow
+### [x] AW-012 Add CI workflow
 
 **Problem:** Tests currently run locally only; regressions will not be caught automatically on GitHub.
 
