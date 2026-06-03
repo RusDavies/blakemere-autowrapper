@@ -20,6 +20,7 @@ class StatefulTarget(BaseTarget):
         return self.value
 
     def format_values(self, prefix, value, *, suffix=""):
+        """Format values for metadata-preservation tests."""
         return f"{prefix}:{value}{suffix}"
 
     def keyword_only_total(self, *, first, second=0):
@@ -286,6 +287,29 @@ class AutoWrapperBindingTests(unittest.TestCase):
         )
         self.assertIsInstance(exception_call[5], ValueError)
         self.assertEqual(str(exception_call[5]), "boom")
+
+    def test_wrapped_proxy_preserves_method_metadata(self):
+        target = StatefulTarget()
+        wrapper = RecordingWrapper(target)
+
+        self.assertEqual(wrapper.format_values.__name__, "format_values")
+        self.assertEqual(
+            wrapper.format_values.__doc__,
+            "Format values for metadata-preservation tests.",
+        )
+        self.assertIs(wrapper.format_values.__wrapped__.__self__, target)
+        self.assertIs(
+            wrapper.format_values.__wrapped__.__func__,
+            StatefulTarget.format_values,
+        )
+
+    def test_direct_proxy_preserves_method_metadata(self):
+        target = StatefulTarget()
+        wrapper = ConfiguredHintsWrapper(target)
+
+        self.assertEqual(wrapper.read_value.__name__, "read_value")
+        self.assertIs(wrapper.read_value.__self__, target)
+        self.assertIs(wrapper.read_value.__func__, StatefulTarget.read_value)
 
 
 if __name__ == "__main__":
