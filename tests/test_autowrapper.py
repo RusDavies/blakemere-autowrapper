@@ -28,6 +28,9 @@ class StatefulTarget(BaseTarget):
     def _private_value(self):
         return f"private:{self.value}"
 
+    def fail_with(self, message):
+        raise ValueError(message)
+
 
 class RecordingWrapper(AutoWrapper):
     def __init__(self, target):
@@ -43,11 +46,11 @@ class RecordingWrapper(AutoWrapper):
             },
         )
 
-    def _pre_method_hook(self, method, *args, **kwargs):
-        self.hook_calls.append(("pre", method.__name__))
+    def _pre_method_hook(self, method_name, method, args, kwargs):
+        self.hook_calls.append(("pre", method_name))
 
-    def _post_method_hook(self, method, *args, **kwargs):
-        self.hook_calls.append(("post", method.__name__))
+    def _post_method_hook(self, method_name, method, args, kwargs, result):
+        self.hook_calls.append(("post", method_name))
 
 
 class DefaultHintsWrapper(AutoWrapper):
@@ -55,11 +58,11 @@ class DefaultHintsWrapper(AutoWrapper):
         self.hook_calls = []
         self.build_wrapper(target)
 
-    def _pre_method_hook(self, method, *args, **kwargs):
-        self.hook_calls.append(("pre", method.__name__))
+    def _pre_method_hook(self, method_name, method, args, kwargs):
+        self.hook_calls.append(("pre", method_name))
 
-    def _post_method_hook(self, method, *args, **kwargs):
-        self.hook_calls.append(("post", method.__name__))
+    def _post_method_hook(self, method_name, method, args, kwargs, result):
+        self.hook_calls.append(("post", method_name))
 
 
 class ConfiguredHintsWrapper(AutoWrapper):
@@ -74,11 +77,11 @@ class ConfiguredHintsWrapper(AutoWrapper):
             },
         )
 
-    def _pre_method_hook(self, method, *args, **kwargs):
-        self.hook_calls.append(("pre", method.__name__))
+    def _pre_method_hook(self, method_name, method, args, kwargs):
+        self.hook_calls.append(("pre", method_name))
 
-    def _post_method_hook(self, method, *args, **kwargs):
-        self.hook_calls.append(("post", method.__name__))
+    def _post_method_hook(self, method_name, method, args, kwargs, result):
+        self.hook_calls.append(("post", method_name))
 
 
 class ExplicitPrivateWrapper(AutoWrapper):
@@ -89,11 +92,36 @@ class ExplicitPrivateWrapper(AutoWrapper):
             hints={"_private_value": {"proxy": True, "wrap": True}},
         )
 
-    def _pre_method_hook(self, method, *args, **kwargs):
-        self.hook_calls.append(("pre", method.__name__))
+    def _pre_method_hook(self, method_name, method, args, kwargs):
+        self.hook_calls.append(("pre", method_name))
 
-    def _post_method_hook(self, method, *args, **kwargs):
-        self.hook_calls.append(("post", method.__name__))
+    def _post_method_hook(self, method_name, method, args, kwargs, result):
+        self.hook_calls.append(("post", method_name))
+
+
+class DetailedHookWrapper(AutoWrapper):
+    def __init__(self, target):
+        self.hook_calls = []
+        self.build_wrapper(
+            target,
+            hints={
+                "format_values": {"proxy": True, "wrap": True},
+                "fail_with": {"proxy": True, "wrap": True},
+            },
+        )
+
+    def _pre_method_hook(self, method_name, method, args, kwargs):
+        self.hook_calls.append(("pre", method_name, method.__name__, args, kwargs))
+
+    def _post_method_hook(self, method_name, method, args, kwargs, result):
+        self.hook_calls.append(
+            ("post", method_name, method.__name__, args, kwargs, result)
+        )
+
+    def _exception_method_hook(self, method_name, method, args, kwargs, exc):
+        self.hook_calls.append(
+            ("exception", method_name, method.__name__, args, kwargs, exc)
+        )
 
 
 class AutoWrapperBindingTests(unittest.TestCase):
@@ -207,6 +235,57 @@ class AutoWrapperBindingTests(unittest.TestCase):
             wrapper.hook_calls,
             [("pre", "_private_value"), ("post", "_private_value")],
         )
+
+    def test_hooks_receive_method_context_args_kwargs_and_result_in_order(self):
+        target = StatefulTarget()
+        wrapper = DetailedHookWrapper(target)
+
+        self.assertEqual(
+            wrapper.format_values("item", value=42, suffix="!"),
+            "item:42!",
+        )
+        self.assertEqual(len(wrapper.hook_calls), 2)
+        self.assertEqual(
+            wrapper.hook_calls[0],
+            (
+                "pre",
+                "format_values",
+                "format_values",
+                ("item",),
+                {"value": 42, "suffix": "!"},
+            ),
+        )
+        self.assertEqual(
+            wrapper.hook_calls[1],
+            (
+                "post",
+                "format_values",
+                "format_values",
+                ("item",),
+                {"value": 42, "suffix": "!"},
+                "item:42!",
+            ),
+        )
+
+    def test_exception_hook_receives_context_and_exception_then_reraises(self):
+        target = StatefulTarget()
+        wrapper = DetailedHookWrapper(target)
+
+        with self.assertRaisesRegex(ValueError, "boom"):
+            wrapper.fail_with("boom")
+
+        self.assertEqual(len(wrapper.hook_calls), 2)
+        self.assertEqual(
+            wrapper.hook_calls[0][:5],
+            ("pre", "fail_with", "fail_with", ("boom",), {}),
+        )
+        exception_call = wrapper.hook_calls[1]
+        self.assertEqual(
+            exception_call[:5],
+            ("exception", "fail_with", "fail_with", ("boom",), {}),
+        )
+        self.assertIsInstance(exception_call[5], ValueError)
+        self.assertEqual(str(exception_call[5]), "boom")
 
 
 if __name__ == "__main__":

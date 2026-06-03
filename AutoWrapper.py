@@ -35,6 +35,8 @@ class AutoWrapper():
           without hook calls.
         * Methods absent from ``hints`` are not proxied when a hints dictionary
           is supplied.
+        * Wrapped method exceptions call ``_exception_method_hook`` and then
+          propagate unchanged.
         """
         self._wrapped = class_to_wrap
         class_type = type(class_to_wrap)
@@ -49,16 +51,24 @@ class AutoWrapper():
     def _wrapper(self, method):
         @wraps(method)
         def wrapped(*args, **kwargs):
-            self._pre_method_hook(method, *args, **kwargs)
-            result = method(*args, **kwargs)
-            self._post_method_hook(method, *args, **kwargs)
+            method_name = method.__name__
+            self._pre_method_hook(method_name, method, args, kwargs)
+            try:
+                result = method(*args, **kwargs)
+            except Exception as exc:
+                self._exception_method_hook(method_name, method, args, kwargs, exc)
+                raise
+            self._post_method_hook(method_name, method, args, kwargs, result)
             return result
         return wrapped
 
-    def _pre_method_hook(self, method, *args, **kwargs):
+    def _pre_method_hook(self, method_name, method, args, kwargs):
         pass
 
-    def _post_method_hook(self, method, *args, **kwargs):
+    def _post_method_hook(self, method_name, method, args, kwargs, result):
+        pass
+
+    def _exception_method_hook(self, method_name, method, args, kwargs, exc):
         pass
 
 
@@ -78,11 +88,11 @@ if __name__ == '__main__':
                       'methodB': {'proxy': True, 'wrap': False} }
             self.build_wrapper( self.example, hints=hints )
 
-        def _pre_method_hook(self, method, *args, **kwargs):
-            print("_pre_method_hook() called for {!r}".format(method.__name__))
+        def _pre_method_hook(self, method_name, method, args, kwargs):
+            print("_pre_method_hook() called for {!r}".format(method_name))
 
-        def _post_method_hook(self, method, *args, **kwargs):
-            print("_post_method_hook() called for {!r}".format(method.__name__))
+        def _post_method_hook(self, method_name, method, args, kwargs, result):
+            print("_post_method_hook() called for {!r}".format(method_name))
 
 
     test = WExample()
