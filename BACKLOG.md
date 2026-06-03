@@ -5,8 +5,8 @@ This backlog captures the initial improvement plan for turning `AutoWrapper.py` 
 ## Burndown
 
 - Open: 0
-- Done: 16
-- Total: 16
+- Done: 17
+- Total: 17
 
 ## Items
 
@@ -190,3 +190,13 @@ This backlog captures the initial improvement plan for turning `AutoWrapper.py` 
 - Document whether standalone function wrapping is supported.
 - If unsupported, state the limitation clearly in README.
 - If supported, add implementation and tests.
+
+### [x] AW-017 Fix Python 3.8 runtime typing compatibility
+
+**Problem:** GitHub Actions showed Python 3.8 failing at import time because `collections.abc.Mapping` and `collections.abc.Callable` are not runtime-subscriptable there, even with postponed annotations.
+
+**Acceptance criteria:**
+
+- Import-time type aliases work on Python 3.8.
+- CI matrix passes on supported Python versions.
+- Existing typed public API remains intact.
