@@ -5,8 +5,8 @@ This backlog captures the initial improvement plan for turning `AutoWrapper.py` 
 ## Burndown
 
 - Open: 0
-- Done: 17
-- Total: 17
+- Done: 18
+- Total: 18
 
 ## Items
 
@@ -200,3 +200,12 @@ This backlog captures the initial improvement plan for turning `AutoWrapper.py` 
 - Import-time type aliases work on Python 3.8.
 - CI matrix passes on supported Python versions.
 - Existing typed public API remains intact.
+
+### [x] AW-018 Fix Python 3.8 runtime tuple type alias compatibility
+
+**Problem:** GitHub Actions showed Python 3.8 still failing at import time because `tuple[...]` is not runtime-subscriptable in Python 3.8 when used in a type alias.
+
+**Acceptance criteria:**
+
+- Runtime type aliases avoid Python 3.9+ builtin generic syntax.
+- CI matrix passes on supported Python versions.

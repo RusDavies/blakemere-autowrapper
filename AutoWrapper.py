@@ -2,11 +2,11 @@ from __future__ import annotations
 
 import inspect
 from functools import wraps
-from typing import Any, Callable, Mapping, Optional
+from typing import Any, Callable, Mapping, Optional, Tuple
 
 HintConfig = Mapping[str, bool]
 Hints = Mapping[str, HintConfig]
-MethodEntry = tuple[str, Callable[..., Any]]
+MethodEntry = Tuple[str, Callable[..., Any]]
 
 
 class AutoWrapper:
