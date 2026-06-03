@@ -53,6 +53,25 @@ class DefaultHintsWrapper(AutoWrapper):
         self.hook_calls.append(("post", method.__name__))
 
 
+class ConfiguredHintsWrapper(AutoWrapper):
+    def __init__(self, target):
+        self.hook_calls = []
+        self.build_wrapper(
+            target,
+            hints={
+                "read_value": {"proxy": True},
+                "add_to_value": {"proxy": True, "wrap": True},
+                "keyword_only_total": {"proxy": False, "wrap": True},
+            },
+        )
+
+    def _pre_method_hook(self, method, *args, **kwargs):
+        self.hook_calls.append(("pre", method.__name__))
+
+    def _post_method_hook(self, method, *args, **kwargs):
+        self.hook_calls.append(("post", method.__name__))
+
+
 class AutoWrapperBindingTests(unittest.TestCase):
     def test_wrapped_method_reads_state_from_target_object(self):
         target = StatefulTarget()
@@ -104,6 +123,35 @@ class AutoWrapperBindingTests(unittest.TestCase):
                 ("post", "add_to_value"),
             ],
         )
+
+    def test_hint_proxy_true_without_wrap_proxies_without_hooks(self):
+        target = StatefulTarget()
+        wrapper = ConfiguredHintsWrapper(target)
+
+        self.assertEqual(wrapper.read_value(), 3)
+        self.assertEqual(wrapper.hook_calls, [])
+
+    def test_hint_proxy_and_wrap_true_proxies_with_hooks(self):
+        target = StatefulTarget()
+        wrapper = ConfiguredHintsWrapper(target)
+
+        self.assertEqual(wrapper.add_to_value(2), 5)
+        self.assertEqual(
+            wrapper.hook_calls,
+            [("pre", "add_to_value"), ("post", "add_to_value")],
+        )
+
+    def test_methods_absent_from_hints_are_not_proxied(self):
+        target = StatefulTarget()
+        wrapper = ConfiguredHintsWrapper(target)
+
+        self.assertFalse(hasattr(wrapper, "format_values"))
+
+    def test_wrap_true_without_proxy_true_is_not_proxied(self):
+        target = StatefulTarget()
+        wrapper = ConfiguredHintsWrapper(target)
+
+        self.assertFalse(hasattr(wrapper, "keyword_only_total"))
 
 
 if __name__ == "__main__":
