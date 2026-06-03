@@ -165,6 +165,16 @@ class AutoWrapperPackagingTests(unittest.TestCase):
     def test_lowercase_import_path_exports_autowrapper(self):
         self.assertIs(LowercaseAutoWrapper, AutoWrapper)
 
+    def test_snake_case_method_discovery_api_matches_compatibility_alias(self):
+        snake_case_results = AutoWrapper.get_methods_to_wrap(StatefulTarget)
+        compatibility_results = AutoWrapper.getMethods2Wrap(StatefulTarget)
+
+        self.assertEqual(snake_case_results, compatibility_results)
+        self.assertIn(
+            "read_value",
+            [name for name, _method in snake_case_results],
+        )
+
 
 class AutoWrapperBindingTests(unittest.TestCase):
     def test_build_wrapper_rejects_instance_attribute_collision(self):
