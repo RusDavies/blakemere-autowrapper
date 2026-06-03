@@ -4,8 +4,8 @@ This backlog captures the initial improvement plan for turning `AutoWrapper.py` 
 
 ## Burndown
 
-- Open: 7
-- Done: 3
+- Open: 6
+- Done: 4
 - Total: 10
 
 ## Items
@@ -31,7 +31,7 @@ This backlog captures the initial improvement plan for turning `AutoWrapper.py` 
 - Default behavior is documented.
 - Tests cover no-hints behavior.
 
-### [ ] AW-003 Clarify proxy/wrap configuration semantics
+### [x] AW-003 Clarify proxy/wrap configuration semantics
 
 **Problem:** The current `hints` structure is workable but underspecified.
 

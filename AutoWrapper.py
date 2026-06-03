@@ -15,10 +15,19 @@ class AutoWrapper():
     def build_wrapper(self, class_to_wrap, hints=None):
         """Build proxy methods for ``class_to_wrap``.
 
-        When ``hints`` is omitted, every method discovered by
-        ``getMethods2Wrap`` is proxied and wrapped with the pre/post hooks.
-        When ``hints`` is supplied, only methods with ``proxy: True`` are
-        proxied, and only methods with ``wrap: True`` are wrapped.
+        Hint semantics:
+
+        * ``hints is None``: every method discovered by ``getMethods2Wrap`` is
+          proxied and wrapped with the pre/post hooks.
+        * ``proxy: True``: expose that method on this wrapper instance.
+        * ``proxy`` absent or false: do not expose that method on this wrapper
+          instance, even if ``wrap`` is true.
+        * ``wrap: True``: proxy the method through ``_pre_method_hook`` and
+          ``_post_method_hook``.
+        * ``wrap`` absent or false: proxy the target-bound method directly
+          without hook calls.
+        * Methods absent from ``hints`` are not proxied when a hints dictionary
+          is supplied.
         """
         self._wrapped = class_to_wrap
         class_type = type(class_to_wrap)
