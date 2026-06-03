@@ -4,8 +4,8 @@ This backlog captures the initial improvement plan for turning `AutoWrapper.py` 
 
 ## Burndown
 
-- Open: 5
-- Done: 5
+- Open: 4
+- Done: 6
 - Total: 10
 
 ## Items
@@ -52,7 +52,7 @@ This backlog captures the initial improvement plan for turning `AutoWrapper.py` 
 - Direct class methods still work.
 - Tests cover a subclass inheriting a method from a parent class.
 
-### [ ] AW-005 Skip private and dunder methods by default
+### [x] AW-005 Skip private and dunder methods by default
 
 **Problem:** Auto-proxying implementation details or Python magic methods can create surprising behavior.
 

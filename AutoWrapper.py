@@ -7,10 +7,10 @@ class AutoWrapper():
     def getMethods2Wrap(class_type, hints=None):
         methods = inspect.getmembers(class_type, predicate=inspect.isfunction)
         if (hints == None):
-            # In this case, where we have no hints, then we wrap all functions.
-            results = methods
+            # With no hints, wrap all public discovered functions.
+            results = [(name, att) for (name, att) in methods if not name.startswith('_')]
         else:
-            # In this case, where a hint dictionary has been given to us, then we use it.
+            # With hints, explicit proxy opt-in can include private methods.
             results = [
                 (name, att) for (name, att) in methods
                 if hints.get(name, {}).get('proxy', False)
@@ -22,9 +22,11 @@ class AutoWrapper():
 
         Hint semantics:
 
-        * ``hints is None``: every method discovered by ``getMethods2Wrap`` is
-          proxied and wrapped with the pre/post hooks.
-        * ``proxy: True``: expose that method on this wrapper instance.
+        * ``hints is None``: every public method discovered by
+          ``getMethods2Wrap`` is proxied and wrapped with the pre/post hooks;
+          names beginning with ``_`` are skipped by default.
+        * ``proxy: True``: expose that method on this wrapper instance. This
+          explicit opt-in can include private methods.
         * ``proxy`` absent or false: do not expose that method on this wrapper
           instance, even if ``wrap`` is true.
         * ``wrap: True``: proxy the method through ``_pre_method_hook`` and
