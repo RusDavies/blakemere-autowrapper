@@ -4,8 +4,8 @@ This backlog captures the initial improvement plan for turning `AutoWrapper.py` 
 
 ## Burndown
 
-- Open: 2
-- Done: 14
+- Open: 1
+- Done: 15
 - Total: 16
 
 ## Items
@@ -181,7 +181,7 @@ This backlog captures the initial improvement plan for turning `AutoWrapper.py` 
 - Add `get_methods_to_wrap` as a snake_case alias or replacement while preserving compatibility.
 - Update docs/tests to prefer the snake_case name.
 
-### [ ] AW-016 Document standalone function support decision
+### [x] AW-016 Document standalone function support decision
 
 **Problem:** The project wraps object methods, not standalone functions, but the scope is not stated explicitly.
 

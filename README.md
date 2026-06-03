@@ -64,6 +64,13 @@ assert wrapper.events == [
 ]
 ```
 
+
+## Scope: object methods, not standalone functions
+
+AutoWrapper is intentionally scoped to wrapping methods discovered from a target object. It supports instance methods, inherited methods, static methods, and class methods on that target object's class.
+
+Standalone/free functions are out of scope for now. If you need to wrap a free function, use a normal decorator directly or place the function behind a small object method before using AutoWrapper.
+
 ## Hint semantics
 
 `build_wrapper(target, hints=...)` accepts a dictionary keyed by method name.
