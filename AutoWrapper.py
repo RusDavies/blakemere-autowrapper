@@ -1,15 +1,20 @@
+import inspect
 from types import FunctionType
 from functools import wraps
 
 class AutoWrapper():
     @staticmethod
     def getMethods2Wrap(class_type, hints=None):
+        methods = inspect.getmembers(class_type, predicate=inspect.isfunction)
         if (hints == None):
-            # In this case, where we have no hints, then we wrap all functions
-            results = [ (name,att) for (name,att) in class_type.__dict__.items() if isinstance(att, FunctionType)]
+            # In this case, where we have no hints, then we wrap all functions.
+            results = methods
         else:
-            # In this case, where a hint dictionary has beengiven to us, then we use it.
-            results = [ (name,att) for (name,att) in class_type.__dict__.items() if hints.get(name, {}).get('proxy', False)]
+            # In this case, where a hint dictionary has been given to us, then we use it.
+            results = [
+                (name, att) for (name, att) in methods
+                if hints.get(name, {}).get('proxy', False)
+            ]
         return results
 
     def build_wrapper(self, class_to_wrap, hints=None):

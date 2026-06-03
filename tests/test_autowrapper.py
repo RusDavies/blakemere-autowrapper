@@ -3,7 +3,12 @@ import unittest
 from AutoWrapper import AutoWrapper
 
 
-class StatefulTarget:
+class BaseTarget:
+    def inherited_value(self):
+        return f"inherited:{self.value}"
+
+
+class StatefulTarget(BaseTarget):
     def __init__(self):
         self.value = 3
 
@@ -31,6 +36,7 @@ class RecordingWrapper(AutoWrapper):
                 "add_to_value": {"proxy": True, "wrap": True},
                 "format_values": {"proxy": True, "wrap": True},
                 "keyword_only_total": {"proxy": True, "wrap": True},
+                "inherited_value": {"proxy": True, "wrap": True},
             },
         )
 
@@ -152,6 +158,21 @@ class AutoWrapperBindingTests(unittest.TestCase):
         wrapper = ConfiguredHintsWrapper(target)
 
         self.assertFalse(hasattr(wrapper, "keyword_only_total"))
+
+    def test_hints_can_proxy_and_wrap_inherited_methods(self):
+        target = StatefulTarget()
+        wrapper = RecordingWrapper(target)
+
+        self.assertEqual(wrapper.inherited_value(), "inherited:3")
+        self.assertIn(("pre", "inherited_value"), wrapper.hook_calls)
+        self.assertIn(("post", "inherited_value"), wrapper.hook_calls)
+
+    def test_no_hints_discovers_inherited_and_direct_methods(self):
+        target = StatefulTarget()
+        wrapper = DefaultHintsWrapper(target)
+
+        self.assertEqual(wrapper.inherited_value(), "inherited:3")
+        self.assertEqual(wrapper.read_value(), 3)
 
 
 if __name__ == "__main__":
