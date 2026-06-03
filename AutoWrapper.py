@@ -7,23 +7,25 @@ class AutoWrapper():
         if (hints == None):
             # In this case, where we have no hints, then we wrap all functions
             results = [ (name,att) for (name,att) in class_type.__dict__.items() if isinstance(att, FunctionType)]
-        else: 
-            # In this case, where a hint dictionary has beengiven to us, then we use it. 
+        else:
+            # In this case, where a hint dictionary has beengiven to us, then we use it.
             results = [ (name,att) for (name,att) in class_type.__dict__.items() if hints.get(name, {}).get('proxy', False)]
-        return results 
+        return results
 
     def build_wrapper(self, class_to_wrap, hints=None):
+        self._wrapped = class_to_wrap
         class_type = type(class_to_wrap)
         for (attributeName, attribute) in __class__.getMethods2Wrap(class_type, hints):
+            bound_attribute = getattr(class_to_wrap, attributeName)
             if ((isinstance(attribute, FunctionType) == True) & (hints.get(attributeName, {}).get('wrap', False) == True)):
-                attribute = self._wrapper(attribute)
-            self.__dict__[attributeName] = attribute
+                bound_attribute = self._wrapper(bound_attribute)
+            self.__dict__[attributeName] = bound_attribute
 
     def _wrapper(self, method):
         @wraps(method)
         def wrapped(*args, **kwargs):
             self._pre_method_hook(method, *args, **kwargs)
-            result = method(self, *args, *kwargs)
+            result = method(*args, **kwargs)
             self._post_method_hook(method, *args, **kwargs)
             return result
         return wrapped
@@ -47,7 +49,7 @@ if __name__ == '__main__':
     class WExample(AutoWrapper):
         def __init__(self):
             self.example = Example()
-            hints = { 'methodA': {'proxy': True, 'wrap': True}, 
+            hints = { 'methodA': {'proxy': True, 'wrap': True},
                       'methodB': {'proxy': True, 'wrap': False} }
             self.build_wrapper( self.example, hints=hints )
 
@@ -57,7 +59,7 @@ if __name__ == '__main__':
         def _post_method_hook(self, method, *args, **kwargs):
             print("_post_method_hook() called for {!r}".format(method.__name__))
 
-            
+
     test = WExample()
     test.methodA()
 
