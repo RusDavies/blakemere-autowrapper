@@ -13,11 +13,20 @@ class AutoWrapper():
         return results
 
     def build_wrapper(self, class_to_wrap, hints=None):
+        """Build proxy methods for ``class_to_wrap``.
+
+        When ``hints`` is omitted, every method discovered by
+        ``getMethods2Wrap`` is proxied and wrapped with the pre/post hooks.
+        When ``hints`` is supplied, only methods with ``proxy: True`` are
+        proxied, and only methods with ``wrap: True`` are wrapped.
+        """
         self._wrapped = class_to_wrap
         class_type = type(class_to_wrap)
+        wrap_by_default = hints is None
         for (attributeName, attribute) in __class__.getMethods2Wrap(class_type, hints):
             bound_attribute = getattr(class_to_wrap, attributeName)
-            if ((isinstance(attribute, FunctionType) == True) & (hints.get(attributeName, {}).get('wrap', False) == True)):
+            should_wrap = wrap_by_default or hints.get(attributeName, {}).get('wrap', False)
+            if ((isinstance(attribute, FunctionType) == True) & (should_wrap == True)):
                 bound_attribute = self._wrapper(bound_attribute)
             self.__dict__[attributeName] = bound_attribute
 

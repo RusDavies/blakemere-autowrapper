@@ -4,8 +4,8 @@ This backlog captures the initial improvement plan for turning `AutoWrapper.py` 
 
 ## Burndown
 
-- Open: 8
-- Done: 2
+- Open: 7
+- Done: 3
 - Total: 10
 
 ## Items
@@ -21,7 +21,7 @@ This backlog captures the initial improvement plan for turning `AutoWrapper.py` 
 - A wrapped method that reads or writes target instance state behaves correctly.
 - Regression test covers a target method using `self.some_attr`.
 
-### [ ] AW-002 Make hints optional and define defaults
+### [x] AW-002 Make hints optional and define defaults
 
 **Problem:** `hints=None` is partly supported by discovery but later code calls `hints.get(...)`, which will fail.
 
