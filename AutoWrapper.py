@@ -1,11 +1,13 @@
 import inspect
-from types import FunctionType
 from functools import wraps
 
 class AutoWrapper():
     @staticmethod
     def getMethods2Wrap(class_type, hints=None):
-        methods = inspect.getmembers(class_type, predicate=inspect.isfunction)
+        methods = inspect.getmembers(
+            class_type,
+            predicate=lambda att: inspect.isfunction(att) or inspect.ismethod(att),
+        )
         if (hints == None):
             # With no hints, wrap all public discovered functions.
             results = [(name, att) for (name, att) in methods if not name.startswith('_')]
@@ -35,6 +37,8 @@ class AutoWrapper():
           without hook calls.
         * Methods absent from ``hints`` are not proxied when a hints dictionary
           is supplied.
+        * Instance methods, static methods, class methods, and inherited
+          methods are discoverable.
         * Wrapped method exceptions call ``_exception_method_hook`` and then
           propagate unchanged.
         * Proxied method names must not collide with existing wrapper
@@ -51,7 +55,7 @@ class AutoWrapper():
                     "Cannot proxy method {!r}: wrapper already has an "
                     "attribute with that name".format(attributeName)
                 )
-            if ((isinstance(attribute, FunctionType) == True) & (should_wrap == True)):
+            if callable(bound_attribute) and should_wrap:
                 bound_attribute = self._wrapper(bound_attribute)
             self.__dict__[attributeName] = bound_attribute
 

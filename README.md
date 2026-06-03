@@ -14,7 +14,7 @@ Implemented behavior:
 - Call target-bound methods so target instance state is preserved.
 - Support optional hints for selecting which methods to proxy and wrap.
 - Support no-hints mode, which proxies and wraps all public discovered methods.
-- Discover inherited instance methods.
+- Discover inherited instance methods, static methods, and class methods.
 - Skip private/dunder methods by default, with explicit hint opt-in.
 - Preserve useful method metadata for wrapped methods via `functools.wraps()`.
 - Provide pre, post, and exception hooks with method context.
@@ -75,12 +75,13 @@ Supported keys:
 
 Behavior:
 
-- `hints is None`: proxy and wrap every public discovered method.
+- `hints is None`: proxy and wrap every public discovered instance, static, and class method.
 - `proxy: True`: expose the method on the wrapper.
 - `proxy` absent or false: do not expose the method, even if `wrap: True`.
 - `wrap: True`: call `_pre_method_hook()` before the target method and `_post_method_hook()` after it succeeds.
 - `wrap` absent or false: expose the target-bound method directly without hooks.
 - Methods absent from a supplied `hints` dictionary are not proxied.
+- Static methods and class methods are supported and can be proxied/wrapped like instance methods.
 - Private methods whose names begin with `_` are skipped by default, but can be explicitly proxied with hints.
 - Proxied method names that collide with existing wrapper attributes or methods raise `AttributeError`.
 

@@ -27,6 +27,14 @@ class StatefulTarget(BaseTarget):
     def keyword_only_total(self, *, first, second=0):
         return first + second
 
+    @staticmethod
+    def static_value(prefix):
+        return f"{prefix}:static"
+
+    @classmethod
+    def class_value(cls):
+        return cls.__name__
+
     def _private_value(self):
         return f"private:{self.value}"
 
@@ -45,6 +53,8 @@ class RecordingWrapper(AutoWrapper):
                 "format_values": {"proxy": True, "wrap": True},
                 "keyword_only_total": {"proxy": True, "wrap": True},
                 "inherited_value": {"proxy": True, "wrap": True},
+                "static_value": {"proxy": True, "wrap": True},
+                "class_value": {"proxy": True, "wrap": True},
             },
         )
 
@@ -263,6 +273,29 @@ class AutoWrapperBindingTests(unittest.TestCase):
 
         self.assertEqual(wrapper.inherited_value(), "inherited:3")
         self.assertEqual(wrapper.read_value(), 3)
+
+    def test_hints_can_proxy_and_wrap_static_methods(self):
+        target = StatefulTarget()
+        wrapper = RecordingWrapper(target)
+
+        self.assertEqual(wrapper.static_value("demo"), "demo:static")
+        self.assertIn(("pre", "static_value"), wrapper.hook_calls)
+        self.assertIn(("post", "static_value"), wrapper.hook_calls)
+
+    def test_hints_can_proxy_and_wrap_class_methods(self):
+        target = StatefulTarget()
+        wrapper = RecordingWrapper(target)
+
+        self.assertEqual(wrapper.class_value(), "StatefulTarget")
+        self.assertIn(("pre", "class_value"), wrapper.hook_calls)
+        self.assertIn(("post", "class_value"), wrapper.hook_calls)
+
+    def test_no_hints_discovers_static_and_class_methods(self):
+        target = StatefulTarget()
+        wrapper = DefaultHintsWrapper(target)
+
+        self.assertEqual(wrapper.static_value("demo"), "demo:static")
+        self.assertEqual(wrapper.class_value(), "StatefulTarget")
 
     def test_no_hints_skips_private_methods_by_default(self):
         target = StatefulTarget()
