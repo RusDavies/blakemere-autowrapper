@@ -154,3 +154,7 @@ BACKLOG.md                  # project improvement backlog
 
 - `autowrapper`: preferred lowercase import path.
 - `AutoWrapper`: original compatibility import path.
+
+## License
+
+MIT. See [LICENSE](LICENSE).

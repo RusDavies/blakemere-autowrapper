@@ -8,7 +8,7 @@ version = "0.1.0"
 description = "Lightweight method proxy/wrapper helper with pre, post, and exception hooks."
 readme = "README.md"
 requires-python = ">=3.8"
-license = {text = "MIT"}
+license = {file = "LICENSE"}
 authors = [
   {name = "Russ Davies"}
 ]
