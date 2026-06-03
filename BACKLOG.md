@@ -4,8 +4,8 @@ This backlog captures the initial improvement plan for turning `AutoWrapper.py` 
 
 ## Burndown
 
-- Open: 4
-- Done: 6
+- Open: 3
+- Done: 7
 - Total: 10
 
 ## Items
@@ -71,7 +71,7 @@ This backlog captures the initial improvement plan for turning `AutoWrapper.py` 
 - Wrapped methods receive positional and keyword arguments correctly.
 - Tests cover keyword-only and mixed positional/keyword calls.
 
-### [ ] AW-007 Add useful hook signatures and exception handling
+### [x] AW-007 Add useful hook signatures and exception handling
 
 **Problem:** Hooks receive limited context and there is no exception hook.
 
