@@ -124,9 +124,15 @@ def _exception_method_hook(self, method_name, method, args, kwargs, exc):
 
 Exceptions raised by wrapped target methods call `_exception_method_hook()` and then propagate unchanged.
 
-## Installation for local development
+## Installation
 
-From a clean checkout, install the project in editable mode with:
+Once published to PyPI, install with:
+
+```bash
+python -m pip install autowrapper
+```
+
+For local development from a clean checkout:
 
 ```bash
 python -m pip install -e .

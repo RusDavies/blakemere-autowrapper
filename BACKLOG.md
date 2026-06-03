@@ -5,8 +5,8 @@ This backlog captures the initial improvement plan for turning `AutoWrapper.py` 
 ## Burndown
 
 - Open: 0
-- Done: 18
-- Total: 18
+- Done: 19
+- Total: 19
 
 ## Items
 
@@ -209,3 +209,14 @@ This backlog captures the initial improvement plan for turning `AutoWrapper.py` 
 
 - Runtime type aliases avoid Python 3.9+ builtin generic syntax.
 - CI matrix passes on supported Python versions.
+
+### [x] AW-019 Set up PyPI publishing workflow and documentation
+
+**Problem:** The package is release-tagged on GitHub but not yet configured with a safe repeatable PyPI publishing process.
+
+**Acceptance criteria:**
+
+- Add a GitHub Actions workflow for PyPI trusted publishing.
+- Document one-time PyPI trusted-publisher setup.
+- Document how to publish the existing `v0.1.0` release.
+- Verify package metadata and build artifacts locally.

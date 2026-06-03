@@ -23,3 +23,10 @@ classifiers = [
 
 [tool.setuptools]
 py-modules = ["AutoWrapper", "autowrapper"]
+
+
+[project.urls]
+Homepage = "https://github.com/RusDavies/blakemere-autowrapper"
+Repository = "https://github.com/RusDavies/blakemere-autowrapper"
+Issues = "https://github.com/RusDavies/blakemere-autowrapper/issues"
+Changelog = "https://github.com/RusDavies/blakemere-autowrapper/releases"
