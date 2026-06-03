@@ -4,8 +4,8 @@ This backlog captures the initial improvement plan for turning `AutoWrapper.py` 
 
 ## Burndown
 
-- Open: 6
-- Done: 4
+- Open: 5
+- Done: 5
 - Total: 10
 
 ## Items
@@ -42,7 +42,7 @@ This backlog captures the initial improvement plan for turning `AutoWrapper.py` 
 - Preserve backward compatibility with current hint dictionaries.
 - Add tests for proxy-only, wrap-only/default, and excluded methods.
 
-### [ ] AW-004 Support inherited methods
+### [x] AW-004 Support inherited methods
 
 **Problem:** Method discovery uses `class_type.__dict__`, so inherited methods are ignored.
 
