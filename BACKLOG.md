@@ -4,8 +4,8 @@ This backlog captures the initial improvement plan for turning `AutoWrapper.py` 
 
 ## Burndown
 
-- Open: 3
-- Done: 7
+- Open: 2
+- Done: 8
 - Total: 10
 
 ## Items
@@ -83,7 +83,7 @@ This backlog captures the initial improvement plan for turning `AutoWrapper.py` 
 - Exceptions still propagate unless explicitly documented otherwise.
 - Tests cover pre/post ordering and exception handling.
 
-### [ ] AW-008 Preserve method metadata
+### [x] AW-008 Preserve method metadata
 
 **Problem:** Generated wrappers should remain debuggable and introspection-friendly.
 
