@@ -4,9 +4,9 @@ This backlog captures the initial improvement plan for turning `AutoWrapper.py` 
 
 ## Burndown
 
-- Open: 0
+- Open: 6
 - Done: 10
-- Total: 10
+- Total: 16
 
 ## Items
 
@@ -126,3 +126,67 @@ This backlog captures the initial improvement plan for turning `AutoWrapper.py` 
 8. AW-008 Preserve method metadata.
 9. AW-010 Add README and test suite.
 10. AW-009 Add project packaging structure.
+
+## Next improvement batch
+
+### [ ] AW-011 Add LICENSE file
+
+**Problem:** `pyproject.toml` declares MIT licensing, but the repository does not include a `LICENSE` file.
+
+**Acceptance criteria:**
+
+- Add an MIT `LICENSE` file.
+- Ensure package metadata and README licensing notes are consistent.
+
+### [ ] AW-012 Add CI workflow
+
+**Problem:** Tests currently run locally only; regressions will not be caught automatically on GitHub.
+
+**Acceptance criteria:**
+
+- Add a GitHub Actions workflow.
+- Run the unittest suite.
+- Run Python compile checks.
+- Build/package validation runs if practical.
+
+### [ ] AW-013 Decide and test classmethod/staticmethod behavior
+
+**Problem:** Static methods are currently discovered, but class methods are skipped because discovery only includes `inspect.isfunction` results.
+
+**Acceptance criteria:**
+
+- Document intended behavior for `@staticmethod` and `@classmethod`.
+- Add explicit tests for static methods.
+- Add explicit tests for class methods or document that they are unsupported.
+- Implement classmethod support if supported behavior is chosen.
+
+### [ ] AW-014 Add collision detection for wrapper attribute assignment
+
+**Problem:** `build_wrapper()` writes proxied methods directly into `self.__dict__`, which can overwrite wrapper state or existing wrapper methods.
+
+**Acceptance criteria:**
+
+- Detect collisions before assigning proxied methods to the wrapper instance.
+- Raise a clear exception by default when a proxied name already exists on the wrapper.
+- Allow safe non-colliding proxy assignment to keep working.
+- Tests cover collisions with wrapper instance attributes and wrapper methods.
+
+### [ ] AW-015 Add type hints and snake_case API alias
+
+**Problem:** Public APIs are untyped and `getMethods2Wrap` is non-idiomatic Python naming.
+
+**Acceptance criteria:**
+
+- Add type hints for public methods and hooks.
+- Add `get_methods_to_wrap` as a snake_case alias or replacement while preserving compatibility.
+- Update docs/tests to prefer the snake_case name.
+
+### [ ] AW-016 Document standalone function support decision
+
+**Problem:** The project wraps object methods, not standalone functions, but the scope is not stated explicitly.
+
+**Acceptance criteria:**
+
+- Document whether standalone function wrapping is supported.
+- If unsupported, state the limitation clearly in README.
+- If supported, add implementation and tests.
