@@ -4,8 +4,8 @@ This backlog captures the initial improvement plan for turning `AutoWrapper.py` 
 
 ## Burndown
 
-- Open: 2
-- Done: 8
+- Open: 1
+- Done: 9
 - Total: 10
 
 ## Items
@@ -103,7 +103,7 @@ This backlog captures the initial improvement plan for turning `AutoWrapper.py` 
 - Add basic package metadata.
 - Keep installation simple for local development.
 
-### [ ] AW-010 Add README and test suite
+### [x] AW-010 Add README and test suite
 
 **Problem:** The project has no external-facing documentation or verification gate.
 
