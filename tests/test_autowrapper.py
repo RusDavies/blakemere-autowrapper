@@ -1,6 +1,7 @@
 import unittest
 
 from AutoWrapper import AutoWrapper
+from autowrapper import AutoWrapper as LowercaseAutoWrapper
 
 
 class BaseTarget:
@@ -123,6 +124,11 @@ class DetailedHookWrapper(AutoWrapper):
         self.hook_calls.append(
             ("exception", method_name, method.__name__, args, kwargs, exc)
         )
+
+
+class AutoWrapperPackagingTests(unittest.TestCase):
+    def test_lowercase_import_path_exports_autowrapper(self):
+        self.assertIs(LowercaseAutoWrapper, AutoWrapper)
 
 
 class AutoWrapperBindingTests(unittest.TestCase):

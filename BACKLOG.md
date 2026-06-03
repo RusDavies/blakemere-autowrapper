@@ -4,8 +4,8 @@ This backlog captures the initial improvement plan for turning `AutoWrapper.py` 
 
 ## Burndown
 
-- Open: 1
-- Done: 9
+- Open: 0
+- Done: 10
 - Total: 10
 
 ## Items
@@ -92,7 +92,7 @@ This backlog captures the initial improvement plan for turning `AutoWrapper.py` 
 - Wrapped proxy methods preserve useful `__name__`, `__doc__`, and related metadata where practical.
 - Tests or direct inspection verify metadata preservation.
 
-### [ ] AW-009 Add project packaging structure
+### [x] AW-009 Add project packaging structure
 
 **Problem:** The repository is currently just a loose module and empty `__init__.py`.
 
