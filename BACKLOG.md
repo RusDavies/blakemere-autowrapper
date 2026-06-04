@@ -4,8 +4,8 @@ This backlog captures the initial improvement plan for turning `AutoWrapper.py` 
 
 ## Burndown
 
-- Open: 2
-- Done: 21
+- Open: 1
+- Done: 22
 - Total: 23
 
 ## Items
@@ -255,7 +255,7 @@ This backlog captures the initial improvement plan for turning `AutoWrapper.py` 
 - Keep `LICENSE` included in built distributions.
 - Bump the package version only when the chosen package metadata/support-policy change is ready to release.
 
-### [ ] AW-023 Update GitHub Actions runtime compatibility before Node 20 removal
+### [x] AW-023 Update GitHub Actions runtime compatibility before Node 20 removal
 
 **Problem:** GitHub Actions now warns that `actions/checkout@v4` and `actions/setup-python@v5` run on Node.js 20, which will be forced to Node.js 24 by default on 2026-06-16 and removed from runners on 2026-09-16.
 
@@ -264,3 +264,5 @@ This backlog captures the initial improvement plan for turning `AutoWrapper.py` 
 - Review whether newer `actions/checkout` and `actions/setup-python` versions are available and suitable.
 - Update CI and publish workflows to Node 24-compatible action versions or explicitly test with `FORCE_JAVASCRIPT_ACTIONS_TO_NODE24=true`.
 - Verify CI across the supported Python matrix after the workflow update.
+
+**Completion notes:** Updated CI, PyPI, and TestPyPI workflows to `actions/checkout@v6` and `actions/setup-python@v6`, both of which declare the Node 24 runtime in their action metadata. The PyPI publish action remains on `pypa/gh-action-pypi-publish@release/v1`, whose current release is a composite action rather than a Node 20 JavaScript action.
