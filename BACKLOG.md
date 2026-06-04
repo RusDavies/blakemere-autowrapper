@@ -5,8 +5,8 @@ This backlog captures the initial improvement plan for turning `AutoWrapper.py` 
 ## Burndown
 
 - Open: 0
-- Done: 21
-- Total: 21
+- Done: 22
+- Total: 22
 
 ## Items
 
@@ -242,3 +242,14 @@ This backlog captures the initial improvement plan for turning `AutoWrapper.py` 
 - Preserve the Python import path `autowrapper`.
 - Bump the package version for the distribution rename.
 - Update TestPyPI/PyPI publishing documentation and install commands.
+
+### [x] AW-022 Update license metadata to SPDX format
+
+**Problem:** Current setuptools emits deprecation warnings for table-style `project.license` metadata and license classifiers; future setuptools versions will stop supporting the deprecated format.
+
+**Acceptance criteria:**
+
+- Use SPDX-style `license = "MIT"` metadata.
+- Keep `LICENSE` included in built distributions.
+- Remove deprecated license classifier metadata.
+- Bump the package version for a future release because package metadata changed after `0.1.1` was published.
