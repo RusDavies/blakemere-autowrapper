@@ -4,8 +4,8 @@ This backlog captures the initial improvement plan for turning `AutoWrapper.py` 
 
 ## Burndown
 
-- Open: 0
-- Done: 22
+- Open: 1
+- Done: 21
 - Total: 22
 
 ## Items
@@ -243,13 +243,14 @@ This backlog captures the initial improvement plan for turning `AutoWrapper.py` 
 - Bump the package version for the distribution rename.
 - Update TestPyPI/PyPI publishing documentation and install commands.
 
-### [x] AW-022 Update license metadata to SPDX format
+### [ ] AW-022 Decide Python 3.8 support vs SPDX license metadata modernization
 
-**Problem:** Current setuptools emits deprecation warnings for table-style `project.license` metadata and license classifiers; future setuptools versions will stop supporting the deprecated format.
+**Problem:** Current setuptools emits deprecation warnings for table-style `project.license` metadata and license classifiers, but the SPDX-style `license = "MIT"` metadata breaks GitHub Actions wheel builds on Python 3.8 because Python 3.8 resolves to a setuptools line that still expects the older PEP 621 table format.
 
 **Acceptance criteria:**
 
-- Use SPDX-style `license = "MIT"` metadata.
+- Decide whether to keep Python 3.8 support until its broader ecosystem support is no longer worth carrying, or drop Python 3.8 and require a newer setuptools/Python packaging baseline.
+- If Python 3.8 stays supported, keep the compatible metadata and tolerate/document the setuptools deprecation warning for now.
+- If Python 3.8 support is dropped, update CI, `requires-python`, docs, and package metadata together.
 - Keep `LICENSE` included in built distributions.
-- Remove deprecated license classifier metadata.
-- Bump the package version for a future release because package metadata changed after `0.1.1` was published.
+- Bump the package version only when the chosen package metadata/support-policy change is ready to release.
