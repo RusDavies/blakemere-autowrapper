@@ -4,9 +4,9 @@ This backlog captures the initial improvement plan for turning `AutoWrapper.py` 
 
 ## Burndown
 
-- Open: 1
+- Open: 2
 - Done: 21
-- Total: 22
+- Total: 23
 
 ## Items
 
@@ -254,3 +254,13 @@ This backlog captures the initial improvement plan for turning `AutoWrapper.py` 
 - If Python 3.8 support is dropped, update CI, `requires-python`, docs, and package metadata together.
 - Keep `LICENSE` included in built distributions.
 - Bump the package version only when the chosen package metadata/support-policy change is ready to release.
+
+### [ ] AW-023 Update GitHub Actions runtime compatibility before Node 20 removal
+
+**Problem:** GitHub Actions now warns that `actions/checkout@v4` and `actions/setup-python@v5` run on Node.js 20, which will be forced to Node.js 24 by default on 2026-06-16 and removed from runners on 2026-09-16.
+
+**Acceptance criteria:**
+
+- Review whether newer `actions/checkout` and `actions/setup-python` versions are available and suitable.
+- Update CI and publish workflows to Node 24-compatible action versions or explicitly test with `FORCE_JAVASCRIPT_ACTIONS_TO_NODE24=true`.
+- Verify CI across the supported Python matrix after the workflow update.
