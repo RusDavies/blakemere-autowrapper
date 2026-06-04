@@ -1,6 +1,6 @@
 # Publishing to PyPI
 
-This project is configured to publish the `autowrapper` distribution using GitHub Actions trusted publishing.
+This project is configured to publish the `blakemere-autowrapper` distribution using GitHub Actions trusted publishing.
 
 Use TestPyPI first, then production PyPI. TestPyPI and PyPI are separate services with separate accounts, separate trusted-publisher settings, and separate package namespaces.
 
@@ -9,7 +9,7 @@ Use TestPyPI first, then production PyPI. TestPyPI and PyPI are separate service
 
 1. Create or sign in to a TestPyPI account: <https://test.pypi.org/account/register/>
 2. Enable 2FA on the TestPyPI account.
-3. Add a pending trusted publisher for the TestPyPI project name `autowrapper`.
+3. Add a pending trusted publisher for the TestPyPI project name `blakemere-autowrapper`.
 4. In TestPyPI, configure a trusted publisher with:
    - Owner: `RusDavies`
    - Repository name: `blakemere-autowrapper`
@@ -29,20 +29,20 @@ Recommended GitHub settings:
 
 ## Publishing to TestPyPI first
 
-Because `v0.1.0` already exists, use the manual TestPyPI workflow once TestPyPI trusted publishing is configured:
+Because the package distribution name changed after `v0.1.0`, use `v0.1.1`, use the manual TestPyPI workflow once TestPyPI trusted publishing is configured:
 
 1. Open: <https://github.com/RusDavies/blakemere-autowrapper/actions/workflows/publish-testpypi.yml>
 2. Click **Run workflow**.
-3. Enter `v0.1.0` as the `ref`.
+3. Enter `v0.1.1` as the `ref`.
 4. Approve the `testpypi` GitHub environment deployment if prompted.
-5. Verify the TestPyPI page: <https://test.pypi.org/project/autowrapper/>
+5. Verify the TestPyPI page: <https://test.pypi.org/project/blakemere-autowrapper/>
 6. Test installation from TestPyPI:
 
    ```bash
-   python -m venv /tmp/autowrapper-testpypi
-   /tmp/autowrapper-testpypi/bin/python -m pip install --upgrade pip
-   /tmp/autowrapper-testpypi/bin/python -m pip install --index-url https://test.pypi.org/simple/ autowrapper==0.1.0
-   /tmp/autowrapper-testpypi/bin/python -c "from autowrapper import AutoWrapper; print(AutoWrapper)"
+   python -m venv /tmp/blakemere-autowrapper-testpypi
+   /tmp/blakemere-autowrapper-testpypi/bin/python -m pip install --upgrade pip
+   /tmp/blakemere-autowrapper-testpypi/bin/python -m pip install --index-url https://test.pypi.org/simple/ blakemere-autowrapper==0.1.1
+   /tmp/blakemere-autowrapper-testpypi/bin/python -c "from autowrapper import AutoWrapper; print(AutoWrapper)"
    ```
 
 Only publish to production PyPI after TestPyPI upload and install verification succeed.
@@ -51,7 +51,7 @@ Only publish to production PyPI after TestPyPI upload and install verification s
 
 1. Create or sign in to a PyPI account: <https://pypi.org/account/register/>
 2. Enable 2FA on the PyPI account. PyPI requires this for publishing.
-3. Create the project on PyPI by publishing the first release, or add a pending trusted publisher for the project name `autowrapper`.
+3. Create the project on PyPI by publishing the first release, or add a pending trusted publisher for the project name `blakemere-autowrapper`.
 4. In PyPI, configure a trusted publisher with:
    - Owner: `RusDavies`
    - Repository name: `blakemere-autowrapper`
@@ -93,24 +93,24 @@ Production publishing is normally triggered by creating a GitHub release from a 
 3. Tag the release, for example:
 
    ```bash
-   git tag -a v0.1.0 -m "Release v0.1.0"
-   git push origin main v0.1.0
+   git tag -a v0.1.1 -m "Release v0.1.1"
+   git push origin main v0.1.1
    ```
 
 4. Create/publish the GitHub release.
 5. The `Publish to PyPI` workflow runs on the published release.
 6. Approve the `pypi` GitHub environment deployment if approval is enabled.
-7. Verify the package page: <https://pypi.org/project/autowrapper/>
+7. Verify the package page: <https://pypi.org/project/blakemere-autowrapper/>
 
-## Publishing the existing `v0.1.0` release to production PyPI
+## Publishing `v0.1.1` to production PyPI
 
-Because `v0.1.0` already exists, use the manual production workflow once PyPI trusted publishing is configured and TestPyPI has been verified:
+Because the package distribution name changed after `v0.1.0`, use `v0.1.1`, use the manual production workflow once PyPI trusted publishing is configured and TestPyPI has been verified:
 
 1. Open: <https://github.com/RusDavies/blakemere-autowrapper/actions/workflows/publish-pypi.yml>
 2. Click **Run workflow**.
-3. Enter `v0.1.0` as the `ref`.
+3. Enter `v0.1.1` as the `ref`.
 4. Approve the `pypi` environment deployment if prompted.
-5. Verify: <https://pypi.org/project/autowrapper/>
+5. Verify: <https://pypi.org/project/blakemere-autowrapper/>
 
 ## Important constraints
 
