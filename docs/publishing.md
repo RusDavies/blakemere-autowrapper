@@ -29,11 +29,11 @@ Recommended GitHub settings:
 
 ## Publishing to TestPyPI first
 
-Because the package distribution name changed after `v0.1.0`, use `v0.1.2`, use the manual TestPyPI workflow once TestPyPI trusted publishing is configured:
+Because the package distribution name changed after `v0.1.0`, use `v0.1.1`, use the manual TestPyPI workflow once TestPyPI trusted publishing is configured:
 
 1. Open: <https://github.com/RusDavies/blakemere-autowrapper/actions/workflows/publish-testpypi.yml>
 2. Click **Run workflow**.
-3. Enter `v0.1.2` as the `ref`.
+3. Enter `v0.1.1` as the `ref`.
 4. Approve the `testpypi` GitHub environment deployment if prompted.
 5. Verify the TestPyPI page: <https://test.pypi.org/project/blakemere-autowrapper/>
 6. Test installation from TestPyPI:
@@ -41,7 +41,7 @@ Because the package distribution name changed after `v0.1.0`, use `v0.1.2`, use 
    ```bash
    python -m venv /tmp/blakemere-autowrapper-testpypi
    /tmp/blakemere-autowrapper-testpypi/bin/python -m pip install --upgrade pip
-   /tmp/blakemere-autowrapper-testpypi/bin/python -m pip install --index-url https://test.pypi.org/simple/ blakemere-autowrapper==0.1.2
+   /tmp/blakemere-autowrapper-testpypi/bin/python -m pip install --index-url https://test.pypi.org/simple/ blakemere-autowrapper==0.1.1
    /tmp/blakemere-autowrapper-testpypi/bin/python -c "from autowrapper import AutoWrapper; print(AutoWrapper)"
    ```
 
@@ -93,8 +93,8 @@ Production publishing is normally triggered by creating a GitHub release from a 
 3. Tag the release, for example:
 
    ```bash
-   git tag -a v0.1.2 -m "Release v0.1.2"
-   git push origin main v0.1.2
+   git tag -a v0.1.1 -m "Release v0.1.1"
+   git push origin main v0.1.1
    ```
 
 4. Create/publish the GitHub release.
@@ -102,13 +102,13 @@ Production publishing is normally triggered by creating a GitHub release from a 
 6. Approve the `pypi` GitHub environment deployment if approval is enabled.
 7. Verify the package page: <https://pypi.org/project/blakemere-autowrapper/>
 
-## Publishing `v0.1.2` to production PyPI
+## Publishing `v0.1.1` to production PyPI
 
-Because the package distribution name changed after `v0.1.0`, use `v0.1.2`, use the manual production workflow once PyPI trusted publishing is configured and TestPyPI has been verified:
+Because the package distribution name changed after `v0.1.0`, use `v0.1.1`, use the manual production workflow once PyPI trusted publishing is configured and TestPyPI has been verified:
 
 1. Open: <https://github.com/RusDavies/blakemere-autowrapper/actions/workflows/publish-pypi.yml>
 2. Click **Run workflow**.
-3. Enter `v0.1.2` as the `ref`.
+3. Enter `v0.1.1` as the `ref`.
 4. Approve the `pypi` environment deployment if prompted.
 5. Verify: <https://pypi.org/project/blakemere-autowrapper/>
 
