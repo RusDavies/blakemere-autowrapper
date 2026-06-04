@@ -154,6 +154,8 @@ from AutoWrapper import AutoWrapper
 
 This project currently uses the Python standard-library `unittest` framework, so no test dependency installation is required.
 
+Supported Python versions currently track the CI matrix: Python 3.8 through 3.13.
+
 From a clean checkout, run:
 
 ```bash
@@ -183,6 +185,14 @@ BACKLOG.md                  # project improvement backlog
 
 - `autowrapper`: preferred lowercase import path.
 - `AutoWrapper`: original compatibility import path.
+
+The project intentionally keeps Python 3.8 support for now. That means packaging metadata stays on the Python 3.8-compatible PEP 621 license table form:
+
+```toml
+license = {file = "LICENSE"}
+```
+
+Modern setuptools versions warn that this form and the MIT license classifier are deprecated in favor of SPDX license metadata. Those warnings are expected until the project drops Python 3.8 or otherwise moves to a newer packaging baseline. The current build still includes the `LICENSE` file in source and wheel distributions.
 
 ## License
 

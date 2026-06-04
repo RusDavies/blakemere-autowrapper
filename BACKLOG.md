@@ -4,8 +4,8 @@ This backlog captures the initial improvement plan for turning `AutoWrapper.py` 
 
 ## Burndown
 
-- Open: 1
-- Done: 22
+- Open: 0
+- Done: 23
 - Total: 23
 
 ## Items
@@ -243,7 +243,7 @@ This backlog captures the initial improvement plan for turning `AutoWrapper.py` 
 - Bump the package version for the distribution rename.
 - Update TestPyPI/PyPI publishing documentation and install commands.
 
-### [ ] AW-022 Decide Python 3.8 support vs SPDX license metadata modernization
+### [x] AW-022 Decide Python 3.8 support vs SPDX license metadata modernization
 
 **Problem:** Current setuptools emits deprecation warnings for table-style `project.license` metadata and license classifiers, but the SPDX-style `license = "MIT"` metadata breaks GitHub Actions wheel builds on Python 3.8 because Python 3.8 resolves to a setuptools line that still expects the older PEP 621 table format.
 
@@ -254,6 +254,10 @@ This backlog captures the initial improvement plan for turning `AutoWrapper.py` 
 - If Python 3.8 support is dropped, update CI, `requires-python`, docs, and package metadata together.
 - Keep `LICENSE` included in built distributions.
 - Bump the package version only when the chosen package metadata/support-policy change is ready to release.
+
+**Decision:** Keep Python 3.8 support for now and retain the Python 3.8-compatible license metadata form, `license = {file = "LICENSE"}`. The setuptools deprecation warnings for table-style license metadata and the MIT license classifier are accepted until the project drops Python 3.8 or otherwise moves to a newer packaging baseline. Do not modernize the license metadata in isolation; when Python 3.8 is dropped, update `requires-python`, CI, README support docs, license metadata/classifiers, and the package version together.
+
+**Completion notes:** Documented the policy in README and publishing docs. Verified that the build still includes `LICENSE` in both the sdist and wheel. No package version bump was made because this change documents the support policy and does not prepare a new package release.
 
 ### [x] AW-023 Update GitHub Actions runtime compatibility before Node 20 removal
 
