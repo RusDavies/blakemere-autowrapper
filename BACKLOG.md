@@ -5,8 +5,8 @@ This backlog captures the initial improvement plan for turning `AutoWrapper.py` 
 ## Burndown
 
 - Open: 0
-- Done: 20
-- Total: 20
+- Done: 21
+- Total: 21
 
 ## Items
 
@@ -231,3 +231,14 @@ This backlog captures the initial improvement plan for turning `AutoWrapper.py` 
 - Document TestPyPI trusted-publisher setup.
 - Document manual publishing of the existing `v0.1.0` tag to TestPyPI.
 - Document TestPyPI installation verification before production PyPI publishing.
+
+### [x] AW-021 Rename PyPI distribution to blakemere-autowrapper
+
+**Problem:** The repository is named `blakemere-autowrapper`, and Russ wants the published PyPI distribution to use the same name rather than `autowrapper`.
+
+**Acceptance criteria:**
+
+- Change the distribution name to `blakemere-autowrapper`.
+- Preserve the Python import path `autowrapper`.
+- Bump the package version for the distribution rename.
+- Update TestPyPI/PyPI publishing documentation and install commands.

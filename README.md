@@ -129,7 +129,7 @@ Exceptions raised by wrapped target methods call `_exception_method_hook()` and 
 Once published to PyPI, install with:
 
 ```bash
-python -m pip install autowrapper
+python -m pip install blakemere-autowrapper
 ```
 
 For local development from a clean checkout:
@@ -138,7 +138,7 @@ For local development from a clean checkout:
 python -m pip install -e .
 ```
 
-The preferred import path is lowercase:
+The PyPI distribution name is `blakemere-autowrapper`. The preferred import path is lowercase:
 
 ```python
 from autowrapper import AutoWrapper

@@ -3,8 +3,8 @@ requires = ["setuptools>=61"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "autowrapper"
-version = "0.1.0"
+name = "blakemere-autowrapper"
+version = "0.1.1"
 description = "Lightweight method proxy/wrapper helper with pre, post, and exception hooks."
 readme = "README.md"
 requires-python = ">=3.8"
