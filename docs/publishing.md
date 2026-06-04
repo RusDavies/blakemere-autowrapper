@@ -84,6 +84,26 @@ python -m twine check dist/*
 
 Also confirm that GitHub Actions CI is green for the commit being released.
 
+## Python 3.8 and license metadata warning policy
+
+The project currently supports Python 3.8 through 3.13. To keep Python 3.8 builds working with the setuptools versions resolved by CI, `pyproject.toml` intentionally uses the older compatible license metadata form:
+
+```toml
+license = {file = "LICENSE"}
+```
+
+Recent setuptools versions emit deprecation warnings recommending SPDX metadata, for example `license = "MIT"`, and removal of the MIT license classifier. Those warnings are accepted for now because the SPDX form previously broke the Python 3.8 CI wheel build.
+
+Do not modernize the license metadata in isolation. When the project is ready to drop Python 3.8, update these together in one release-prep change:
+
+- `requires-python`
+- GitHub Actions CI matrix
+- README support statement
+- `pyproject.toml` license metadata and classifiers
+- package version
+
+Until then, a successful build that includes `LICENSE` in both the sdist and wheel is preferred over warning-free metadata that breaks Python 3.8.
+
 ## Publishing a production release
 
 Production publishing is normally triggered by creating a GitHub release from a version tag:
