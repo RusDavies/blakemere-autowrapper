@@ -5,8 +5,8 @@ This backlog captures the initial improvement plan for turning `AutoWrapper.py` 
 ## Burndown
 
 - Open: 0
-- Done: 23
-- Total: 23
+- Done: 24
+- Total: 24
 
 ## Items
 
@@ -270,3 +270,15 @@ This backlog captures the initial improvement plan for turning `AutoWrapper.py` 
 - Verify CI across the supported Python matrix after the workflow update.
 
 **Completion notes:** Updated CI, PyPI, and TestPyPI workflows to `actions/checkout@v6` and `actions/setup-python@v6`, both of which declare the Node 24 runtime in their action metadata. The PyPI publish action remains on `pypa/gh-action-pypi-publish@release/v1`, whose current release is a composite action rather than a Node 20 JavaScript action.
+
+### [x] AW-024 Restrict CI workflow token permissions
+
+**Problem:** The CI workflow relied on GitHub's default `GITHUB_TOKEN` permissions. Repository or organization defaults can change, so the workflow should explicitly request only read access for normal test/build work.
+
+**Acceptance criteria:**
+
+- Add explicit `permissions: contents: read` to the CI workflow.
+- Keep publishing workflows on trusted-publishing `id-token: write` permissions only where required.
+- Verify local compile, test, build, twine, wheel-install smoke, and security scanner gates.
+
+**Completion notes:** Hardened `.github/workflows/ci.yml` with explicit read-only contents permissions. Publish workflows already use explicit `contents: read` plus `id-token: write` inside protected PyPI/TestPyPI environments, so no change was needed there.
