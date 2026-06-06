@@ -5,8 +5,8 @@ This backlog captures the initial improvement plan for turning `AutoWrapper.py` 
 ## Burndown
 
 - Open: 0
-- Done: 24
-- Total: 24
+- Done: 25
+- Total: 25
 
 ## Items
 
@@ -282,3 +282,16 @@ This backlog captures the initial improvement plan for turning `AutoWrapper.py` 
 - Verify local compile, test, build, twine, wheel-install smoke, and security scanner gates.
 
 **Completion notes:** Hardened `.github/workflows/ci.yml` with explicit read-only contents permissions. Publish workflows already use explicit `contents: read` plus `id-token: write` inside protected PyPI/TestPyPI environments, so no change was needed there.
+
+### [x] AW-025 Pin GitHub Actions to immutable SHAs
+
+**Problem:** CI and publish workflows referenced GitHub Actions by moving tags/branches (`actions/checkout@v6`, `actions/setup-python@v6`, and `pypa/gh-action-pypi-publish@release/v1`). Moving refs are convenient, but they are a supply-chain risk for trusted-publishing workflows because the executed action code can change without a repository diff.
+
+**Acceptance criteria:**
+
+- Pin all workflow `uses:` entries to full 40-character commit SHAs.
+- Keep human-readable comments showing the upstream action/ref that was pinned.
+- Add a policy test that fails if future workflow `uses:` entries are not SHA-pinned.
+- Verify compile, unittest, build, twine, wheel-install smoke, and security scanner gates.
+
+**Completion notes:** Pinned checkout, setup-python, and PyPI publish actions to current immutable SHAs and added a unittest policy check for workflow action pinning.
