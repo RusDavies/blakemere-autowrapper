@@ -296,14 +296,28 @@ This backlog captures the initial improvement plan for turning `AutoWrapper.py` 
 
 **Completion notes:** Pinned checkout, setup-python, and PyPI publish actions to current immutable SHAs and added a unittest policy check for workflow action pinning.
 
-### [ ] AW-026 Modernize license metadata before setuptools deprecation deadline
+### [x] AW-026 Modernize license metadata before setuptools deprecation deadline
 
 **Problem:** The 2026-06-11 release-readiness build passed, but current setuptools emits deprecation warnings for `project.license` as a TOML table and for the license classifier. Setuptools says this format must be updated before 2027-02-18. This is not an immediate security vulnerability, but it is a packaging/release-readiness maintenance risk.
 
 **Acceptance criteria:**
 
-- Confirm the minimum `setuptools` version needed for SPDX-style license metadata while preserving the supported Python 3.8+ build matrix.
+- Drop Python 3.8 support and require the minimum `setuptools` version needed for SPDX-style license metadata on the remaining supported Python 3.9+ build matrix.
 - Update `pyproject.toml` to use modern license metadata, e.g. SPDX expression plus explicit license files, without losing the packaged `LICENSE` file.
 - Remove or adjust deprecated license classifiers if appropriate.
 - Verify local compile, unittest, build, twine, clean wheel install/import/use smoke, and CI matrix.
 - Decide whether the metadata-only change warrants a patch release after TestPyPI validation.
+
+**Completion notes:** Dropped Python 3.8 support, raised `requires-python` to `>=3.9`, removed Python 3.8 from CI, bumped package version to `0.1.2`, set the build backend minimum to `setuptools>=77.0.3`, switched to `license = "MIT"` plus `license-files = ["LICENSE"]`, removed the deprecated MIT license classifier, and updated README/publishing documentation. Local verification passed: compile, unittest, build, twine, clean wheel install/import/use smoke, and explicit sdist/wheel `LICENSE` presence checks. GitHub Actions CI still needs to run on the merged commit.
+
+### [ ] AW-027 Validate and publish v0.1.2 through TestPyPI/PyPI
+
+**Problem:** AW-026 prepares a release-visible packaging metadata change and drops Python 3.8 support, but publishing should not happen until the trusted-publishing workflows and package install are validated on TestPyPI.
+
+**Acceptance criteria:**
+
+- Tag the verified release commit as `v0.1.2` when ready.
+- Run the TestPyPI publishing workflow and verify the TestPyPI project page.
+- Install `blakemere-autowrapper==0.1.2` from TestPyPI in a clean environment and smoke-test both import paths.
+- Confirm GitHub Actions CI is green for the release commit.
+- If TestPyPI passes, run the production PyPI workflow and verify the production project page.

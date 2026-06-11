@@ -29,11 +29,11 @@ Recommended GitHub settings:
 
 ## Publishing to TestPyPI first
 
-Because the package distribution name changed after `v0.1.0`, use `v0.1.1`, use the manual TestPyPI workflow once TestPyPI trusted publishing is configured:
+For the next packaging-metadata release, use `v0.1.2` with the manual TestPyPI workflow once TestPyPI trusted publishing is configured:
 
 1. Open: <https://github.com/RusDavies/blakemere-autowrapper/actions/workflows/publish-testpypi.yml>
 2. Click **Run workflow**.
-3. Enter `v0.1.1` as the `ref`.
+3. Enter `v0.1.2` as the `ref`.
 4. Approve the `testpypi` GitHub environment deployment if prompted.
 5. Verify the TestPyPI page: <https://test.pypi.org/project/blakemere-autowrapper/>
 6. Test installation from TestPyPI:
@@ -41,7 +41,7 @@ Because the package distribution name changed after `v0.1.0`, use `v0.1.1`, use 
    ```bash
    python -m venv /tmp/blakemere-autowrapper-testpypi
    /tmp/blakemere-autowrapper-testpypi/bin/python -m pip install --upgrade pip
-   /tmp/blakemere-autowrapper-testpypi/bin/python -m pip install --index-url https://test.pypi.org/simple/ blakemere-autowrapper==0.1.1
+   /tmp/blakemere-autowrapper-testpypi/bin/python -m pip install --index-url https://test.pypi.org/simple/ blakemere-autowrapper==0.1.2
    /tmp/blakemere-autowrapper-testpypi/bin/python -c "from autowrapper import AutoWrapper; print(AutoWrapper)"
    ```
 
@@ -84,25 +84,18 @@ python -m twine check dist/*
 
 Also confirm that GitHub Actions CI is green for the commit being released.
 
-## Python 3.8 and license metadata warning policy
+## Python version and license metadata policy
 
-The project currently supports Python 3.8 through 3.13. To keep Python 3.8 builds working with the setuptools versions resolved by CI, `pyproject.toml` intentionally uses the older compatible license metadata form:
+The project currently supports Python 3.9 through 3.13. Python 3.8 support was dropped in `v0.1.2` so the package can use modern SPDX license metadata before the setuptools deprecation deadline.
+
+`pyproject.toml` uses PEP 639-style license metadata:
 
 ```toml
-license = {file = "LICENSE"}
+license = "MIT"
+license-files = ["LICENSE"]
 ```
 
-Recent setuptools versions emit deprecation warnings recommending SPDX metadata, for example `license = "MIT"`, and removal of the MIT license classifier. Those warnings are accepted for now because the SPDX form previously broke the Python 3.8 CI wheel build.
-
-Do not modernize the license metadata in isolation. When the project is ready to drop Python 3.8, update these together in one release-prep change:
-
-- `requires-python`
-- GitHub Actions CI matrix
-- README support statement
-- `pyproject.toml` license metadata and classifiers
-- package version
-
-Until then, a successful build that includes `LICENSE` in both the sdist and wheel is preferred over warning-free metadata that breaks Python 3.8.
+The build backend requires `setuptools>=77.0.3`, the minimum setuptools line used here for SPDX license expressions and explicit license-file metadata. The deprecated MIT license classifier was removed. Local release verification must confirm that the generated sdist and wheel still include the `LICENSE` file.
 
 ## Publishing a production release
 
@@ -113,8 +106,8 @@ Production publishing is normally triggered by creating a GitHub release from a 
 3. Tag the release, for example:
 
    ```bash
-   git tag -a v0.1.1 -m "Release v0.1.1"
-   git push origin main v0.1.1
+   git tag -a v0.1.2 -m "Release v0.1.2"
+   git push origin main v0.1.2
    ```
 
 4. Create/publish the GitHub release.
@@ -122,13 +115,13 @@ Production publishing is normally triggered by creating a GitHub release from a 
 6. Approve the `pypi` GitHub environment deployment if approval is enabled.
 7. Verify the package page: <https://pypi.org/project/blakemere-autowrapper/>
 
-## Publishing `v0.1.1` to production PyPI
+## Publishing `v0.1.2` to production PyPI
 
-Because the package distribution name changed after `v0.1.0`, use `v0.1.1`, use the manual production workflow once PyPI trusted publishing is configured and TestPyPI has been verified:
+Use `v0.1.2` with the manual production workflow once PyPI trusted publishing is configured and TestPyPI has been verified:
 
 1. Open: <https://github.com/RusDavies/blakemere-autowrapper/actions/workflows/publish-pypi.yml>
 2. Click **Run workflow**.
-3. Enter `v0.1.1` as the `ref`.
+3. Enter `v0.1.2` as the `ref`.
 4. Approve the `pypi` environment deployment if prompted.
 5. Verify: <https://pypi.org/project/blakemere-autowrapper/>
 
