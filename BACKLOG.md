@@ -4,9 +4,9 @@ This backlog captures the initial improvement plan for turning `AutoWrapper.py` 
 
 ## Burndown
 
-- Open: 0
+- Open: 1
 - Done: 25
-- Total: 25
+- Total: 26
 
 ## Items
 
@@ -295,3 +295,15 @@ This backlog captures the initial improvement plan for turning `AutoWrapper.py` 
 - Verify compile, unittest, build, twine, wheel-install smoke, and security scanner gates.
 
 **Completion notes:** Pinned checkout, setup-python, and PyPI publish actions to current immutable SHAs and added a unittest policy check for workflow action pinning.
+
+### [ ] AW-026 Modernize license metadata before setuptools deprecation deadline
+
+**Problem:** The 2026-06-11 release-readiness build passed, but current setuptools emits deprecation warnings for `project.license` as a TOML table and for the license classifier. Setuptools says this format must be updated before 2027-02-18. This is not an immediate security vulnerability, but it is a packaging/release-readiness maintenance risk.
+
+**Acceptance criteria:**
+
+- Confirm the minimum `setuptools` version needed for SPDX-style license metadata while preserving the supported Python 3.8+ build matrix.
+- Update `pyproject.toml` to use modern license metadata, e.g. SPDX expression plus explicit license files, without losing the packaged `LICENSE` file.
+- Remove or adjust deprecated license classifiers if appropriate.
+- Verify local compile, unittest, build, twine, clean wheel install/import/use smoke, and CI matrix.
+- Decide whether the metadata-only change warrants a patch release after TestPyPI validation.
