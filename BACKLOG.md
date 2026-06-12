@@ -308,7 +308,7 @@ This backlog captures the initial improvement plan for turning `AutoWrapper.py` 
 - Verify local compile, unittest, build, twine, clean wheel install/import/use smoke, and CI matrix.
 - Decide whether the metadata-only change warrants a patch release after TestPyPI validation.
 
-**Completion notes:** Dropped Python 3.8 support, raised `requires-python` to `>=3.9`, removed Python 3.8 from CI, bumped package version to `0.1.2`, set the build backend minimum to `setuptools>=77.0.3`, switched to `license = "MIT"` plus `license-files = ["LICENSE"]`, removed the deprecated MIT license classifier, and updated README/publishing documentation. Local verification passed: compile, unittest, build, twine, clean wheel install/import/use smoke, and explicit sdist/wheel `LICENSE` presence checks. GitHub Actions CI still needs to run on the merged commit.
+**Completion notes:** Dropped Python 3.8 support, raised `requires-python` to `>=3.9`, removed Python 3.8 from CI, bumped package version to `0.1.2`, set the build backend minimum to `setuptools>=77.0.3`, switched to `license = "MIT"` plus `license-files = ["LICENSE"]`, removed the deprecated MIT license classifier, and updated README/publishing documentation. Local verification passed: compile, unittest, build, twine, clean wheel install/import/use smoke, and explicit sdist/wheel `LICENSE` presence checks. GitHub Actions CI passed on the merged commit `74f654b`.
 
 ### [ ] AW-027 Validate and publish v0.1.2 through TestPyPI/PyPI
 
