@@ -310,7 +310,7 @@ This backlog captures the initial improvement plan for turning `AutoWrapper.py` 
 
 **Completion notes:** Dropped Python 3.8 support, raised `requires-python` to `>=3.9`, removed Python 3.8 from CI, bumped package version to `0.1.2`, set the build backend minimum to `setuptools>=77.0.3`, switched to `license = "MIT"` plus `license-files = ["LICENSE"]`, removed the deprecated MIT license classifier, and updated README/publishing documentation. Local verification passed: compile, unittest, build, twine, clean wheel install/import/use smoke, and explicit sdist/wheel `LICENSE` presence checks. GitHub Actions CI passed on the merged commit `74f654b`.
 
-### [ ] AW-027 Validate and publish v0.1.2 through TestPyPI/PyPI
+### [x] AW-027 Validate and publish v0.1.2 through TestPyPI/PyPI
 
 **Problem:** AW-026 prepares a release-visible packaging metadata change and drops Python 3.8 support, but publishing should not happen until the trusted-publishing workflows and package install are validated on TestPyPI.
 
@@ -321,3 +321,5 @@ This backlog captures the initial improvement plan for turning `AutoWrapper.py` 
 - Install `blakemere-autowrapper==0.1.2` from TestPyPI in a clean environment and smoke-test both import paths.
 - Confirm GitHub Actions CI is green for the release commit.
 - If TestPyPI passes, run the production PyPI workflow and verify the production project page.
+
+**Completion notes:** Tagged and pushed `v0.1.2` at `8ae3019`. GitHub Actions CI passed for the release commit. The TestPyPI trusted-publishing workflow passed in run `27421110714`, and a clean install from TestPyPI verified both `autowrapper` and `AutoWrapper` import paths. The production PyPI trusted-publishing workflow passed in run `27421224758`, and a clean install from PyPI verified both import paths. Production PyPI now has `blakemere-autowrapper==0.1.2`.
